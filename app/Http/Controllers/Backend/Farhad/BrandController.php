@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\Backend\Farhad;
 
+use App\Models\Brand;
 use App\Models\Product;
-use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-class CategoryController extends Controller
+class BrandController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -62,20 +62,20 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
-        $category = Category::findOrFail($id);
+        $brand = Brand::findOrFail($id);
 
-        if ($category->slug === 'uncategorized') {
-            return redirect()->back()->with('error', 'Cannot delete Uncategorized category.');
+        if ($brand->slug === 'unbranded') {
+            return redirect()->back()->with('error', 'Cannot delete Unbranded brand.');
         }
 
-        $uncategorizedId = Category::where('slug', 'uncategorized')->first()->id;
+        $unbrandedId = Brand::where('slug', 'unbranded')->first()->id;
 
         // Reassign products
-        Product::where('category_id', $category->id)
-            ->update(['category_id' => $uncategorizedId]);
+        Product::where('brand_id', $brand->id)
+            ->update(['brand_id' => $unbrandedId]);
 
-        $category->delete();
+        $brand->delete();
 
-        return redirect()->back()->with('success', 'Category deleted and products reassigned.');
+        return redirect()->back()->with('success', 'Brand deleted and products reassigned.');
     }
 }
