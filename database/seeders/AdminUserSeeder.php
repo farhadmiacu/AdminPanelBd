@@ -21,20 +21,20 @@ class AdminUserSeeder extends Seeder
 
         // Create Admin User
         $admin = User::firstOrCreate(
-            ['email' => 'admin@gmail.com'],
+            ['email' => 'admin@admin.com'],
             [
                 'name' => 'Admin',
-                'password' => Hash::make('1-8'),
+                'password' => Hash::make('12345678'),
             ]
         );
         $admin->assignRole($adminRole);
 
         // Create Normal User
         $user = User::firstOrCreate(
-            ['email' => 'user@gmail.com'],
+            ['email' => 'user@user.com'],
             [
                 'name' => 'User',
-                'password' => Hash::make('1-8'),
+                'password' => Hash::make('12345678'),
             ]
         );
         $user->assignRole($userRole);

@@ -14,7 +14,8 @@ class BrandController extends Controller
      */
     public function index()
     {
-        //
+        $brands = Brand::all();
+        return view('backend.layouts.brand.index', compact('brands'));
     }
 
     /**
@@ -22,7 +23,7 @@ class BrandController extends Controller
      */
     public function create()
     {
-        //
+        return view('backend.layouts.brand.create');
     }
 
     /**
@@ -30,31 +31,77 @@ class BrandController extends Controller
      */
     public function store(Request $request)
     {
-        //
-    }
+        $request->validate([
+            'name' => 'required|string|unique:brands,name|max:255',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            'status' => 'required|in:0,1',
+        ]);
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
+        // Handle image upload
+        if ($request->file('image')) {
+            $image     = $request->file('image');
+            $imageName = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
+            $directory = 'uploads/brands-images/';
+            $image->move($directory, $imageName);
+            $imageUrl = $directory . $imageName;
+        } else {
+            $imageUrl = null;
+        }
+
+        $brand = new Brand();
+        $brand->name   = $request->name;
+        // $brand->slug = Str::slug($request->name); // slug handled in model
+        $brand->image  = $imageUrl;
+        $brand->status = $request->status;
+        $brand->save();
+
+        return back()->with('message', 'New Brand information added successfully');
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit($id)
     {
-        //
+        $brand = Brand::findOrFail($id);
+        return view('backend.layouts.brand.edit', compact('brand'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
-        //
+        $brand = Brand::findOrFail($id);
+
+        $request->validate([
+            'name' => 'required|string|max:255|unique:brands,name,' . $brand->id . ',id',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            'status' => 'required|in:0,1',
+        ]);
+
+        // Image upload or keep old
+        if ($request->file('image')) {
+            if ($brand->image && file_exists($brand->image)) {
+                unlink($brand->image);
+            }
+
+            $image     = $request->file('image');
+            $imageName = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
+            $directory = 'uploads/brands-images/';
+            $image->move($directory, $imageName);
+            $imageUrl = $directory . $imageName;
+        } else {
+            $imageUrl = $brand->image;
+        }
+
+        $brand->name   = $request->name;
+        // $brand->slug = Str::slug($request->name); // slug handled in model
+        $brand->image  = $imageUrl;
+        $brand->status = $request->status;
+        $brand->save();
+
+        return back()->with('message', 'Brand information updated successfully');
     }
 
     /**
@@ -73,6 +120,11 @@ class BrandController extends Controller
         // Reassign products
         Product::where('brand_id', $brand->id)
             ->update(['brand_id' => $unbrandedId]);
+
+        // Delete image if exists
+        if ($brand->image && file_exists($brand->image)) {
+            unlink($brand->image);
+        }
 
         $brand->delete();
 

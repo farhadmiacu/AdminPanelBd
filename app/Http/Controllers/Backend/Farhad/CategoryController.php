@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Backend\Farhad;
 
 use App\Models\Product;
 use App\Models\Category;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -14,7 +15,8 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        //
+        $categories = Category::all();
+        return view('backend.layouts.category.index', compact('categories'));
     }
 
     /**
@@ -22,7 +24,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        //
+        return view('backend.layouts.category.create');
     }
 
     /**
@@ -30,13 +32,38 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // return $request;
+        $request->validate([
+            'name' => 'required|string|unique:categories,name|max:255',
+            // 'slug' => 'required|string|unique:categories,slug|max:255',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            'status' => 'required|in:0,1',
+        ]);
+
+        // Handle image upload
+        if ($request->file('image')) {
+            $image     = $request->file('image');
+            $imageName = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
+            $directory = 'uploads/categories-images/';
+            $image->move($directory, $imageName);
+            $imageUrl = $directory . $imageName;
+        } else {
+            $imageUrl = null;
+        }
+
+        $category                 = new Category();
+        $category->name           = $request->name;
+        // $category->slug           = Str::slug($request->name); //slug is handled in model
+        $category->image          = $imageUrl;
+        $category->status         = $request->status;
+        $category->save();
+        return back()->with('message', 'New Category information added successfully');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show($id)
     {
         //
     }
@@ -44,17 +71,49 @@ class CategoryController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit($id)
     {
-        //
+        $category = Category::findOrFail($id);
+        return view('backend.layouts.category.edit', compact('category'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
-        //
+        $category = Category::findOrFail($id);
+        $request->validate([
+            'name' => 'required|string|max:255|unique:categories,name,' . $category->id . ',id',
+            // 'slug' => 'required|string|unique:categories,slug|max:255',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            'status' => 'required|in:0,1',
+        ]);
+
+        // Image upload or keep old
+        if ($request->file('image')) {
+            // Remove existing image if any
+            if ($category->image && file_exists($category->image)) {
+                unlink($category->image);
+            }
+
+            // Upload new image
+            $image     = $request->file('image');
+            $imageName = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
+            $directory = 'uploads/categories-images/';
+            $image->move($directory, $imageName);
+            $imageUrl = $directory . $imageName;
+        } else {
+            $imageUrl = $category->image;
+        }
+
+        $category->name           = $request->name;
+        // $category->slug           = Str::slug($request->name); //slug is handled in model
+        $category->image          = $imageUrl;
+        $category->status         = $request->status;
+        $category->save();
+
+        return back()->with('message', 'Category information updated successfully');
     }
 
     /**
@@ -73,6 +132,11 @@ class CategoryController extends Controller
         // Reassign products
         Product::where('category_id', $category->id)
             ->update(['category_id' => $uncategorizedId]);
+
+        // Check if image is not null and file exists before unlinking
+        if ($category->image && file_exists($category->image)) {
+            unlink($category->image);
+        }
 
         $category->delete();
 

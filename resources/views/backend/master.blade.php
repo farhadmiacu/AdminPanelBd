@@ -69,9 +69,9 @@
 
                     @yield('content')
 
-                    <div class="row">
+                    {{-- <div class="row">
                         <p>this is master</p>
-                    </div>
+                    </div> --}}
 
                 </div>
                 <!-- container-fluid -->
@@ -109,6 +109,8 @@
     @include('backend.partials.theme-setting')
 
     @include('backend.partials.script')
+
+    @stack('scripts')
 </body>
 
 </html>
