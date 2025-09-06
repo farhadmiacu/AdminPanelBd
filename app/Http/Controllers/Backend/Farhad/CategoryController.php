@@ -7,6 +7,7 @@ use App\Models\Category;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Intervention\Image\Facades\Image;
 
 class CategoryController extends Controller
 {
@@ -45,7 +46,11 @@ class CategoryController extends Controller
             $image     = $request->file('image');
             $imageName = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
             $directory = 'uploads/categories-images/';
-            $image->move($directory, $imageName);
+            // $image->move($directory, $imageName);
+            // Resize to 60x60 (image intervention)
+            $resizedImage = Image::make($image)->resize(60, 60);
+            $resizedImage->save(public_path($directory . $imageName));
+
             $imageUrl = $directory . $imageName;
         } else {
             $imageUrl = null;
@@ -101,7 +106,12 @@ class CategoryController extends Controller
             $image     = $request->file('image');
             $imageName = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
             $directory = 'uploads/categories-images/';
-            $image->move($directory, $imageName);
+            // $image->move($directory, $imageName);
+
+            // Resize to 60x60 (image intervention)
+            $resizedImage = Image::make($image)->resize(60, 60);
+            $resizedImage->save(public_path($directory . $imageName));
+
             $imageUrl = $directory . $imageName;
         } else {
             $imageUrl = $category->image;
