@@ -42,6 +42,22 @@
                 </div>
             </li>
 
+            <li class="nav-item">
+                <a class="nav-link menu-link" href="#sidebarProduct" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarProduct">
+                    <i class="ri-store-2-line"></i> <span data-key="t-products">Product</span>
+                </a>
+                <div class="collapse menu-dropdown" id="sidebarProduct">
+                    <ul class="nav nav-sm flex-column">
+                        <li class="nav-item">
+                            <a href="{{ route('admin.products.create') }}" class="nav-link" data-key="t-create"> Product Create </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('admin.products.index') }}" class="nav-link" data-key="t-list"> Products </a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+
             {{-- Menu end  --}}
 
             {{-- Settings start  --}}

@@ -46,6 +46,10 @@ class CategoryController extends Controller
             $image     = $request->file('image');
             $imageName = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
             $directory = 'uploads/categories-images/';
+            // ✅ Create directory if it doesn't exist
+            if (!file_exists(public_path($directory))) {
+                mkdir(public_path($directory), 0755, true);
+            }
             // $image->move($directory, $imageName);
             // Resize to 60x60 (image intervention)
             $resizedImage = Image::make($image)->resize(60, 60);
