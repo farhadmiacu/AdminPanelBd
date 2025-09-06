@@ -53,10 +53,8 @@
                             <div class="col-xxl-12 col-md-12">
                                 <div>
                                     <label for="image" class="form-label">Image</label>
-                                    <input type="file" name="image" id="image" class="form-control">
-                                    @if ($category->image)
-                                        <img src="{{ asset($category->image) }}" alt="Category Image" class="img-fluid mt-2" width="150">
-                                    @endif
+                                    <input type="file" name="image" id="image" class="form-control dropify" data-allowed-file-extensions="jpg jpeg png gif"
+                                        data-default-file="{{ $category->image ? asset($category->image) : '' }}">
                                     @error('image')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
@@ -102,6 +100,20 @@
                 .replace(/\s+/g, '-') // replace spaces with -
                 .replace(/-+/g, '-'); // remove multiple -
             document.getElementById('slug').value = slug;
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+            // Initialize Dropify
+            $('.dropify').dropify({
+                messages: {
+                    'default': 'Drag and drop a file here or click',
+                    'replace': 'Drag and drop or click to replace',
+                    'remove': 'Remove file',
+                    'error': 'Ooops! something went wrong.'
+                }
+            });
+
         });
     </script>
 @endpush
