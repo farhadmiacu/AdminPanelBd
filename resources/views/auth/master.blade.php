@@ -1,8 +1,8 @@
 <!doctype html>
 <html lang="en" data-layout="vertical" data-topbar="light" data-sidebar="dark" data-sidebar-size="lg" data-sidebar-image="none" data-preloader="disable" data-theme="default" data-theme-colors="default">
 
-
 <!-- Mirrored from themesbrand.com/velzon/html/master/auth-signin-basic.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 11 Jun 2025 19:00:29 GMT -->
+
 <head>
 
     <meta charset="utf-8" />
@@ -11,7 +11,7 @@
     <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
     <meta content="Themesbrand" name="author" />
     <!-- App favicon -->
-    <link rel="shortcut icon" href="{{asset('/')}}backend/assets/images/favicon.ico">
+    <link rel="shortcut icon" href="{{ asset('/') }}backend/assets/images/favicon.ico">
 
     @include('auth.partials.style')
 
@@ -40,7 +40,9 @@
                     <div class="col-lg-12">
                         <div class="text-center">
                             <p class="mb-0 text-muted">&copy;
-                                <script>document.write(new Date().getFullYear())</script> Velzon. Crafted with <i class="mdi mdi-heart text-danger"></i> by Themesbrand
+                                <script>
+                                    document.write(new Date().getFullYear())
+                                </script> Velzon. Crafted with <i class="mdi mdi-heart text-danger"></i> by Themesbrand
                             </p>
                         </div>
                     </div>
@@ -55,6 +57,6 @@
 
 </body>
 
-
 <!-- Mirrored from themesbrand.com/velzon/html/master/auth-signin-basic.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 11 Jun 2025 19:00:30 GMT -->
+
 </html>

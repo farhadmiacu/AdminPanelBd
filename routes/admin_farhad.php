@@ -4,11 +4,10 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Backend\Farhad\BrandController;
 use App\Http\Controllers\Backend\Farhad\ProductController;
 use App\Http\Controllers\Backend\Farhad\CategoryController;
+use App\Http\Controllers\Backend\Farhad\DashboardController;
+use App\Http\Controllers\Backend\Farhad\SystemSettingController;
 
-Route::get('/admin/dashboard', function () {
-    return view('backend.master');
-})->name('admin.dashboard');
-
+Route::get('/admin/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
 
 Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
 
@@ -30,7 +29,7 @@ Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
     Route::put('categories/{category}', [CategoryController::class, 'update'])->name('categories.update');
     Route::delete('categories/{category}', [CategoryController::class, 'destroy'])->name('categories.destroy');
 
-     // Products routes
+    // Products routes
     Route::get('products', [ProductController::class, 'index'])->name('products.index');
     Route::get('products/create', [ProductController::class, 'create'])->name('products.create');
     Route::post('products', [ProductController::class, 'store'])->name('products.store');
@@ -38,6 +37,8 @@ Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
     Route::get('products/{product}/edit', [ProductController::class, 'edit'])->name('products.edit');
     Route::put('products/{product}', [ProductController::class, 'update'])->name('products.update');
     Route::delete('products/{product}', [ProductController::class, 'destroy'])->name('products.destroy');
-    
 
+    // Systems routes
+    Route::get('system/settings', [SystemSettingController::class, 'edit'])->name('system-settings.edit');
+    Route::post('system/settings', [SystemSettingController::class, 'update'])->name('system-settings.update');
 });

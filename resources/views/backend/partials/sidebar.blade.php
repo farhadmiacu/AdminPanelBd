@@ -4,6 +4,8 @@
         <div id="two-column-menu">
         </div>
         <ul class="navbar-nav" id="navbar-nav">
+
+            {{-- Menu start  --}}
             <li class="menu-title"><span data-key="t-menu">Menu</span></li>
 
             <li class="nav-item">
@@ -21,7 +23,7 @@
 
                     </ul>
                 </div>
-            </li> <!-- end Dashboard Menu -->
+            </li>
 
             <li class="nav-item">
                 <a class="nav-link menu-link" href="#sidebarBrand" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarBrand">
@@ -38,7 +40,32 @@
 
                     </ul>
                 </div>
-            </li> <!-- end Dashboard Menu -->
+            </li>
+
+            {{-- Menu end  --}}
+
+            {{-- Settings start  --}}
+
+            <li class="menu-title"><span data-key="t-menu">Settings</span></li>
+
+            <li class="nav-item">
+                <a class="nav-link menu-link" href="#sidebarSetting" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarSetting">
+                    <i class="ri-dashboard-2-line"></i> <span data-key="t-dashboards">System Settings</span>
+                </a>
+                <div class="collapse menu-dropdown" id="sidebarSetting">
+                    <ul class="nav nav-sm flex-column">
+                        <li class="nav-item">
+                            <a href="{{ route('admin.system-settings.edit') }}" class="nav-link" data-key="t-analytics"> System Setting</a>
+                        </li>
+                        <li class="nav-item">
+                            {{-- <a href="{{ route('admin.categories.index') }}" class="nav-link" data-key="t-crm"> Categories </a> --}}
+                        </li>
+
+                    </ul>
+                </div>
+            </li>
+
+            {{-- Settings end  --}}
 
             <li class="menu-title"><i class="ri-more-fill"></i> <span data-key="t-pages">Pages</span></li>
 

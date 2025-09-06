@@ -2,13 +2,14 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm-6">
-                <script>
+                {{-- <script>
                     document.write(new Date().getFullYear())
-                </script> © BD.
+                </script> --}}
+                {{ $systemSetting->copyright_text }}
             </div>
             <div class="col-sm-6">
                 <div class="text-sm-end d-none d-sm-block">
-                    Elegent Design
+                    {{ $systemSetting->company_name }}
                 </div>
             </div>
         </div>
