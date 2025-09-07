@@ -52,6 +52,7 @@
                                     <th>Name</th>
                                     <th>Slug</th>
                                     <th>Image</th>
+                                    {{-- <th>Status2</th> --}}
                                     <th>Status</th>
                                     <th>Actions</th>
                                 </tr>
@@ -69,7 +70,20 @@
                                                 <span class="text-muted">No Image</span>
                                             @endif
                                         </td>
-                                        <td>{{ $brand->status ? 'Active' : 'Inactive' }}</td>
+                                        {{-- <td>{{ $brand->status ? 'Active' : 'Inactive' }}</td> --}}
+
+                                        {{-- <td>
+                                            <div class="form-check form-switch form-switch-right form-switch-md">
+                                                <input class="form-check-input code-switcher" type="checkbox" id="default">
+                                            </div>
+                                        </td> --}}
+
+                                        <td>
+                                            <div class="form-check form-switch form-switch-right form-switch-md">
+                                                <input class="form-check-input status-switch" type="checkbox" data-id="{{ $brand->id }}" data-type="brand" {{ $brand->status ? 'checked' : '' }}>
+                                            </div>
+                                        </td>
+
                                         <td>
                                             <a href="{{ route('admin.brands.edit', $brand->id) }}" class="btn btn-sm btn-primary">Edit</a>
                                             <form action="{{ route('admin.brands.destroy', $brand->id) }}" method="POST" style="display:inline-block;">

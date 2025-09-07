@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Backend\Farhad\BrandController;
+use App\Http\Controllers\Backend\Farhad\StatusController;
 use App\Http\Controllers\Backend\Farhad\ProductController;
 use App\Http\Controllers\Backend\Farhad\CategoryController;
 use App\Http\Controllers\Backend\Farhad\DashboardController;
@@ -41,4 +42,7 @@ Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
     // Systems routes
     Route::get('system/settings', [SystemSettingController::class, 'edit'])->name('system-settings.edit');
     Route::post('system/settings', [SystemSettingController::class, 'update'])->name('system-settings.update');
+
+    //status
+    Route::post('/update-status', [StatusController::class, 'update'])->name('status.update');
 });

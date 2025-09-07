@@ -69,7 +69,12 @@
                                                 <span class="text-muted">No Image</span>
                                             @endif
                                         </td>
-                                        <td>{{ $category->status ? 'Active' : 'Inactive' }}</td>
+                                        {{-- <td>{{ $category->status ? 'Active' : 'Inactive' }}</td> --}}
+                                        <td>
+                                            <div class="form-check form-switch form-switch-right form-switch-md">
+                                                <input class="form-check-input status-switch" type="checkbox" data-id="{{ $category->id }}" data-type="category" {{ $category->status ? 'checked' : '' }}>
+                                            </div>
+                                        </td>
                                         <td>
                                             <a href="{{ route('admin.categories.edit', $category->id) }}" class="btn btn-sm btn-primary">Edit</a>
                                             <form action="{{ route('admin.categories.destroy', $category->id) }}" method="POST" style="display:inline-block;">
