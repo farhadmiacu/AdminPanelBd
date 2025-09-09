@@ -1,3 +1,5 @@
+<!-- Jquery -->
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
 <!-- JAVASCRIPT -->
 <script src="{{ asset('/') }}backend/assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script src="{{ asset('/') }}backend/assets/libs/simplebar/simplebar.min.js"></script>
@@ -8,22 +10,11 @@
 
 <!-- apexcharts -->
 <script src="{{ asset('/') }}backend/assets/libs/apexcharts/apexcharts.min.js"></script>
-
 <!-- Vector map-->
 <script src="{{ asset('/') }}backend/assets/libs/jsvectormap/jsvectormap.min.js"></script>
 <script src="{{ asset('/') }}backend/assets/libs/jsvectormap/maps/world-merc.js"></script>
-
 <!--Swiper slider js-->
 <script src="{{ asset('/') }}backend/assets/libs/swiper/swiper-bundle.min.js"></script>
-
-<!-- Dashboard init -->
-<script src="{{ asset('/') }}backend/assets/js/pages/dashboard-ecommerce.init.js"></script>
-
-<!-- App js -->
-<script src="{{ asset('/') }}backend/assets/js/app.js"></script>
-
-<!-- Jquery -->
-<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
 
 <!-- Data Table -->
 <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
@@ -37,6 +28,14 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <!-- sweetalert2 -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<!-- IziToast JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/js/iziToast.min.js"></script>
+
+<!-- Dashboard init -->
+<script src="{{ asset('/') }}backend/assets/js/pages/dashboard-ecommerce.init.js"></script>
+<!-- App js -->
+<script src="{{ asset('/') }}backend/assets/js/app.js"></script>
+
 <!-- Set CSRF token for all AJAX requests -->
 <script>
     $(document).ready(function() {
@@ -93,5 +92,3 @@
     });
 </script>
 {{-- status update end  --}}
-
-

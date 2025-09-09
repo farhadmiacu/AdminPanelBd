@@ -93,7 +93,7 @@
     <!--end back-to-top-->
 
     <!--preloader-->
-    <div id="preloader">
+    {{-- <div id="preloader">
         <div id="status">
             <div class="spinner-border text-primary avatar-sm" role="status">
                 <span class="visually-hidden">Loading...</span>
@@ -105,11 +105,12 @@
         <div class="btn-info rounded-pill shadow-lg btn btn-icon btn-lg p-2" data-bs-toggle="offcanvas" data-bs-target="#theme-settings-offcanvas" aria-controls="theme-settings-offcanvas">
             <i class='mdi mdi-spin mdi-cog-outline fs-22'></i>
         </div>
-    </div>
+    </div> --}}
 
-    @include('backend.partials.theme-setting')
+    {{-- @include('backend.partials.theme-setting') --}}
 
     @include('backend.partials.script')
+    @include('backend.partials.notification-sweetalert2-delete')
 
     @stack('scripts')
 </body>

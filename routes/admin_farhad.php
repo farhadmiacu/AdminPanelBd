@@ -65,6 +65,7 @@ Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
     Route::get('users/{user}/edit', [UserController::class, 'edit'])->name('users.edit');
     Route::put('users/{user}', [UserController::class, 'update'])->name('users.update');
     Route::delete('users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
+    Route::post('verify-password', [UserController::class, 'verifyPassword'])->name('verify-password'); //for verify password for delete
 
 
     //status

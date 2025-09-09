@@ -137,6 +137,10 @@ class BrandController extends Controller
 
         $brand->delete();
 
-        return redirect()->back()->with('success', 'Brand deleted and products reassigned.');
+        // return redirect()->back()->with('success', 'Brand deleted and products reassigned.');
+        return response()->json([
+        'success' => true,
+        'message' => 'Brand deleted and products reassigned.'
+    ]);
     }
 }

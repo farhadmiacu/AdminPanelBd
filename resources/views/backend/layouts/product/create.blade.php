@@ -207,4 +207,6 @@
                 console.error(error);
             });
     </script>
+    {{-- iziToast  --}}
+    @include('backend.partials.notification-iziToast')
 @endpush

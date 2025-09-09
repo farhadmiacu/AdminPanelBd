@@ -24,7 +24,7 @@
                 <div class="card-header align-items-center d-flex">
                     <h4 class="card-title mb-0 flex-grow-1">Brand list</h4>
                     <a href="{{ route('admin.brands.create') }}" class="btn btn-sm btn-success">Add Brand</a>
-                </div><!-- end card header -->
+                </div>
 
                 {{-- <div class="card-body">
                     <div class="row gy-4">
@@ -45,79 +45,62 @@
                 </div> --}}
 
                 <div class="card-body">
-                    <div class="table-reponsive">
-                        <table id="categoriesTable" class="table table-bordered w-100">
-                            <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>Name</th>
-                                    <th>Slug</th>
-                                    <th>Image</th>
-                                    {{-- <th>Status2</th> --}}
-                                    <th>Status</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($brands as $key => $brand)
+                    <!-- Wrap table in a form to disable autofill -->
+                    <form autocomplete="off">
+                        <!-- Hidden input to trick Chrome autofill -->
+                        <input type="text" style="display:none">
+                        <div class="table-reponsive">
+                            <table id="categoriesTable" class="table table-bordered w-100">
+                                <thead>
                                     <tr>
-                                        <td>{{ $key + 1 }}</td>
-                                        <td>{{ $brand->name }}</td>
-                                        <td>{{ $brand->slug }}</td>
-                                        <td>
-                                            @if ($brand->image)
-                                                <img src="{{ asset($brand->image) }}" alt="{{ $brand->name }}" style="width: 60px; height: auto; margin-top: 5px;">
-                                            @else
-                                                <span class="text-muted">No Image</span>
-                                            @endif
-                                        </td>
-                                        {{-- <td>{{ $brand->status ? 'Active' : 'Inactive' }}</td> --}}
-
-                                        {{-- <td>
-                                            <div class="form-check form-switch form-switch-right form-switch-md">
-                                                <input class="form-check-input code-switcher" type="checkbox" id="default">
-                                            </div>
-                                        </td> --}}
-
-                                        {{-- <td>
-                                            <div class="form-check form-switch form-switch-right form-switch-md">
-                                                <input class="form-check-input status-switch" type="checkbox" data-id="{{ $brand->id }}" data-type="brand" {{ $brand->status ? 'checked' : '' }}>
-                                            </div>
-                                        </td> --}}
-                                        <td>
-                                            <div class="form-check form-switch form-switch-right form-switch-md">
-                                                <input class="form-check-input status-switch" type="checkbox" data-id="{{ $brand->id }}" data-type="brand" {{ $brand->status ? 'checked' : '' }}
-                                                    @cannot('brand_edit') disabled @endcannot>
-                                            </div>
-                                        </td>
-
-                                        {{-- <td>
-                                            <a href="{{ route('admin.brands.edit', $brand->id) }}" class="btn btn-sm btn-primary">Edit</a>
-                                            <form action="{{ route('admin.brands.destroy', $brand->id) }}" method="POST" style="display:inline-block;">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-sm btn-danger">Delete</button>
-                                            </form>
-                                        </td> --}}
-
-                                        <td>
-                                            @can('brand_edit')
-                                                <a href="{{ route('admin.brands.edit', $brand->id) }}" class="btn btn-sm btn-primary">Edit</a>
-                                            @endcan
-
-                                            @can('brand_delete')
-                                                <form action="{{ route('admin.brands.destroy', $brand->id) }}" method="POST" style="display:inline-block;">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="btn btn-sm btn-danger">Delete</button>
-                                                </form>
-                                            @endcan
-                                        </td>
+                                        <th>#</th>
+                                        <th>Name</th>
+                                        <th>Slug</th>
+                                        <th>Image</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
                                     </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
+                                </thead>
+                                <tbody>
+                                    @foreach ($brands as $key => $brand)
+                                        <tr>
+                                            <td>{{ $key + 1 }}</td>
+                                            <td>{{ $brand->name }}</td>
+                                            <td>{{ $brand->slug }}</td>
+                                            <td>
+                                                @if ($brand->image)
+                                                    <img src="{{ asset($brand->image) }}" alt="{{ $brand->name }}" style="width: 60px; height: auto; margin-top: 5px;">
+                                                @else
+                                                    <span class="text-muted">No Image</span>
+                                                @endif
+                                            </td>
+                                            {{-- <td>{{ $brand->status ? 'Active' : 'Inactive' }}</td> --}}
+                                            <td>
+                                                <div class="form-check form-switch form-switch-right form-switch-md">
+                                                    <input class="form-check-input status-switch" type="checkbox" data-id="{{ $brand->id }}" data-type="brand" {{ $brand->status ? 'checked' : '' }}
+                                                        @cannot('brand_edit') disabled @endcannot>
+                                                </div>
+                                            </td>
+
+                                            <td>
+                                                @can('brand_edit')
+                                                    <a href="{{ route('admin.brands.edit', $brand->id) }}" class="btn btn-sm btn-primary">Edit</a>
+                                                @endcan
+
+                                                @can('brand_delete')
+                                                    <form action="{{ route('admin.brands.destroy', $brand->id) }}" method="POST" style="display:inline-block;">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="btn btn-sm btn-danger delete-button secure-delete-button">Delete</button>
+                                                    </form>
+                                                @endcan
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </form>
                 </div>
 
             </div>
@@ -129,14 +112,105 @@
 
 {{-- Push the script --}}
 @push('scripts')
-    <script>
+    {{-- <script>
         $(document).ready(function() {
             $('#categoriesTable').DataTable({
                 responsive: true,
+            });
 
+        });
+    </script> --}}
+    <script>
+        $(document).ready(function() {
+            // Initialize DataTable
+            var table = $('#categoriesTable').DataTable({
+                responsive: true,
+            });
+
+            // Prevent Chrome autofill on search input
+            setTimeout(function() {
+                var searchInput = $('#categoriesTable_filter input[type="search"]');
+                searchInput.attr({
+                    autocomplete: 'off', // standard
+                    name: 'dt_search_' + Date.now(), // unique name
+                    id: 'dt_search_' + Date.now() // unique id
+                });
+            }, 100);
+        });
+    </script>
+
+    {{-- password delete  --}}
+    <script>
+        $(document).on('click', '.secure-delete-button', function(e) {
+            e.preventDefault();
+            let form = $(this).closest('form');
+            let row = $(this).closest('tr');
+
+            Swal.fire({
+                title: 'Confirm Deletion',
+                html: `<div style="text-align: center;">
+                        <p>Please enter your password to delete this record:</p>
+                         <input type="password" id="swal-password" class="swal2-input" placeholder="Password" style="margin: 0 auto;">
+                      </div>`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Verify & Delete',
+                cancelButtonText: 'Cancel',
+                preConfirm: () => {
+                    let password = $('#swal-password').val();
+                    if (!password) Swal.showValidationMessage('Password is required');
+                    return password;
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: '{{ route('admin.verify-password') }}',
+                        type: 'POST',
+                        data: {
+                            password: result.value,
+                            _token: '{{ csrf_token() }}'
+                        },
+                        success: function(res) {
+                            if (res.success) {
+                                // password is correct then submit the form
+                                $.ajax({
+                                    url: form.attr('action'),
+                                    type: 'POST',
+                                    data: form.serialize(),
+                                    success: function(data) {
+                                        if (data.success) {
+                                            let table = $('#categoriesTable').DataTable();
+                                            table.row(row).remove().draw();
+
+                                            Swal.fire({
+                                                icon: 'success',
+                                                text: data.message,
+                                                toast: true,
+                                                position: 'top-end',
+                                                timer: 3000,
+                                                showConfirmButton: false
+                                            });
+                                        } else {
+                                            Swal.fire('Error', data.message, 'error');
+                                        }
+                                    },
+                                    error: function() {
+                                        Swal.fire('Error', 'Something went wrong!', 'error');
+                                    }
+                                });
+                            } else {
+                                Swal.fire('Error', res.message, 'error');
+                            }
+                        },
+                        error: function() {
+                            Swal.fire('Error', 'Verification failed!', 'error');
+                        }
+                    });
+                }
             });
         });
     </script>
+
     {{-- sweet alert2 notifications --}}
     @include('backend.partials.notification-sweetalert2')
 @endpush

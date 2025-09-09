@@ -192,4 +192,25 @@ class UserController extends Controller
 
         return redirect()->route('admin.users.index')->with('success', 'User deleted successfully.');
     }
+
+    /**
+     * Verify authenticated user's password via AJAX
+     */
+    public function verifyPassword(Request $request)
+    {
+        $request->validate([
+            'password' => 'required|string',
+        ]);
+
+        $user = auth()->user();
+
+        if (Hash::check($request->password, $user->password)) {
+            return response()->json(['success' => true]);
+        }
+
+        return response()->json([
+            'success' => false,
+            'message' => 'Incorrect password'
+        ]);
+    }
 }
