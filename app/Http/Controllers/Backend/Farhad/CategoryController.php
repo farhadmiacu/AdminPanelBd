@@ -75,7 +75,7 @@ class CategoryController extends Controller
         $category->image          = $imageUrl;
         $category->status         = $request->status;
         $category->save();
-        return back()->with('message', 'New Category information added successfully');
+        return back()->with('success', 'New Category information added successfully');
     }
 
     /**
@@ -136,7 +136,7 @@ class CategoryController extends Controller
         $category->status         = $request->status;
         $category->save();
 
-        return back()->with('message', 'Category information updated successfully');
+        return back()->with('success', 'Category information updated successfully');
     }
 
     /**

@@ -4,12 +4,10 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
+    // return view('welcome');
+    return redirect()->route('login');
 });
 
-Route::get('/dash', function () {
-    return view('backend.master');
-});
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -21,5 +19,5 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
-require __DIR__.'/admin_farhad.php';
+require __DIR__ . '/auth.php';
+require __DIR__ . '/admin_farhad.php';

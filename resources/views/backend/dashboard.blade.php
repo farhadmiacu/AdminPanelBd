@@ -8,13 +8,13 @@
                     <div class="col-12">
                         <div class="d-flex align-items-lg-center flex-lg-row flex-column">
                             <div class="flex-grow-1">
-                                <h4 class="fs-16 mb-1">Good Morning, Anna!</h4>
+                                <h4 class="fs-16 mb-1">Good Morning, {{ auth()->user()->name }}!</h4>
                                 <p class="text-muted mb-0">Here's what's happening with your store today.</p>
                             </div>
                             <div class="mt-3 mt-lg-0">
                                 <form action="javascript:void(0);">
                                     <div class="row g-3 mb-0 align-items-center">
-                                        <div class="col-sm-auto">
+                                        {{-- <div class="col-sm-auto">
                                             <div class="input-group">
                                                 <input type="text" class="form-control border-0 minimal-border dash-filter-picker shadow" data-provider="flatpickr" data-range-date="true"
                                                     data-date-format="d M, Y" data-deafult-date="01 Jan 2022 to 31 Jan 2022">
@@ -22,11 +22,15 @@
                                                     <i class="ri-calendar-2-line"></i>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </div> --}}
                                         <!--end col-->
-                                        <div class="col-auto">
-                                            <button type="button" class="btn btn-soft-success material-shadow-none"><i class="ri-add-circle-line align-middle me-1"></i> Add Product</button>
-                                        </div>
+                                        @can('product_create')
+                                            <div class="col-auto">
+                                                <button type="button" class="btn btn-soft-success material-shadow-none" onclick="window.location='{{ route('admin.products.create') }}'"><i
+                                                        class="ri-add-circle-line align-middle me-1"></i> Add Product</button>
+                                            </div>
+                                        @endcan
+
                                         <!--end col-->
                                         <div class="col-auto">
                                             <button type="button" class="btn btn-soft-info btn-icon waves-effect material-shadow-none waves-light layout-rightside-btn"><i
@@ -50,18 +54,18 @@
                             <div class="card-body">
                                 <div class="d-flex align-items-center">
                                     <div class="flex-grow-1 overflow-hidden">
-                                        <p class="text-uppercase fw-medium text-muted text-truncate mb-0"> Total Earnings</p>
+                                        <p class="text-uppercase fw-medium text-muted text-truncate mb-0"> Total Products</p>
                                     </div>
-                                    <div class="flex-shrink-0">
+                                    {{-- <div class="flex-shrink-0">
                                         <h5 class="text-success fs-14 mb-0">
                                             <i class="ri-arrow-right-up-line fs-13 align-middle"></i> +16.24 %
                                         </h5>
-                                    </div>
+                                    </div> --}}
                                 </div>
                                 <div class="d-flex align-items-end justify-content-between mt-4">
                                     <div>
-                                        <h4 class="fs-22 fw-semibold ff-secondary mb-4">$<span class="counter-value" data-target="559.25">0</span>k </h4>
-                                        <a href="#" class="text-decoration-underline">View net earnings</a>
+                                        <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span class="counter-value" data-target="{{ $totalProducts }}">0</span> </h4>
+                                        {{-- <a href="#" class="text-decoration-underline">View net earnings</a> --}}
                                     </div>
                                     <div class="avatar-sm flex-shrink-0">
                                         <span class="avatar-title bg-success-subtle rounded fs-3">
@@ -79,18 +83,18 @@
                             <div class="card-body">
                                 <div class="d-flex align-items-center">
                                     <div class="flex-grow-1 overflow-hidden">
-                                        <p class="text-uppercase fw-medium text-muted text-truncate mb-0">Orders</p>
+                                        <p class="text-uppercase fw-medium text-muted text-truncate mb-0">Total Categories</p>
                                     </div>
-                                    <div class="flex-shrink-0">
+                                    {{-- <div class="flex-shrink-0">
                                         <h5 class="text-danger fs-14 mb-0">
                                             <i class="ri-arrow-right-down-line fs-13 align-middle"></i> -3.57 %
                                         </h5>
-                                    </div>
+                                    </div> --}}
                                 </div>
                                 <div class="d-flex align-items-end justify-content-between mt-4">
                                     <div>
-                                        <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span class="counter-value" data-target="36894">0</span></h4>
-                                        <a href="#" class="text-decoration-underline">View all orders</a>
+                                        <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span class="counter-value" data-target="{{ $totalCategories }}">0</span></h4>
+                                        {{-- <a href="#" class="text-decoration-underline">View all orders</a> --}}
                                     </div>
                                     <div class="avatar-sm flex-shrink-0">
                                         <span class="avatar-title bg-info-subtle rounded fs-3">
@@ -108,18 +112,18 @@
                             <div class="card-body">
                                 <div class="d-flex align-items-center">
                                     <div class="flex-grow-1 overflow-hidden">
-                                        <p class="text-uppercase fw-medium text-muted text-truncate mb-0">Customers</p>
+                                        <p class="text-uppercase fw-medium text-muted text-truncate mb-0">Total Brands</p>
                                     </div>
-                                    <div class="flex-shrink-0">
+                                    {{-- <div class="flex-shrink-0">
                                         <h5 class="text-success fs-14 mb-0">
                                             <i class="ri-arrow-right-up-line fs-13 align-middle"></i> +29.08 %
                                         </h5>
-                                    </div>
+                                    </div> --}}
                                 </div>
                                 <div class="d-flex align-items-end justify-content-between mt-4">
                                     <div>
-                                        <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span class="counter-value" data-target="183.35">0</span>M </h4>
-                                        <a href="#" class="text-decoration-underline">See details</a>
+                                        <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span class="counter-value" data-target="{{ $totalBrands }}">0</span> </h4>
+                                        {{-- <a href="#" class="text-decoration-underline">See details</a> --}}
                                     </div>
                                     <div class="avatar-sm flex-shrink-0">
                                         <span class="avatar-title bg-warning-subtle rounded fs-3">
@@ -137,18 +141,18 @@
                             <div class="card-body">
                                 <div class="d-flex align-items-center">
                                     <div class="flex-grow-1 overflow-hidden">
-                                        <p class="text-uppercase fw-medium text-muted text-truncate mb-0"> My Balance</p>
+                                        <p class="text-uppercase fw-medium text-muted text-truncate mb-0"> Total Users</p>
                                     </div>
-                                    <div class="flex-shrink-0">
+                                    {{-- <div class="flex-shrink-0">
                                         <h5 class="text-muted fs-14 mb-0">
                                             +0.00 %
                                         </h5>
-                                    </div>
+                                    </div> --}}
                                 </div>
                                 <div class="d-flex align-items-end justify-content-between mt-4">
                                     <div>
-                                        <h4 class="fs-22 fw-semibold ff-secondary mb-4">$<span class="counter-value" data-target="165.89">0</span>k </h4>
-                                        <a href="#" class="text-decoration-underline">Withdraw money</a>
+                                        <h4 class="fs-22 fw-semibold ff-secondary mb-4">$<span class="counter-value" data-target="{{ $totalUsers }}">0</span> </h4>
+                                        {{-- <a href="#" class="text-decoration-underline">Withdraw money</a> --}}
                                     </div>
                                     <div class="avatar-sm flex-shrink-0">
                                         <span class="avatar-title bg-primary-subtle rounded fs-3">

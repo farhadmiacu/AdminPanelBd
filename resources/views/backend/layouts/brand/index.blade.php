@@ -19,10 +19,11 @@
     <!-- end page title -->
 
     <div class="row justify-content-center">
-        <div class="col-lg-8">
+        <div class="col-lg-12">
             <div class="card">
                 <div class="card-header align-items-center d-flex">
                     <h4 class="card-title mb-0 flex-grow-1">Brand list</h4>
+                    <a href="{{ route('admin.brands.create') }}" class="btn btn-sm btn-success">Add Brand</a>
                 </div><!-- end card header -->
 
                 {{-- <div class="card-body">
@@ -136,4 +137,6 @@
             });
         });
     </script>
+    {{-- sweet alert2 notifications --}}
+    @include('backend.partials.notification-sweetalert2')
 @endpush

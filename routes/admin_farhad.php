@@ -10,9 +10,12 @@ use App\Http\Controllers\Backend\Farhad\DashboardController;
 use App\Http\Controllers\Backend\Farhad\SystemSettingController;
 use App\Http\Controllers\Backend\Farhad\UserController;
 
-Route::get('/admin/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
+
 
 Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
+
+    // Dashboard route
+    Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     // Brands routes
     Route::get('brands', [BrandController::class, 'index'])->name('brands.index');

@@ -64,7 +64,7 @@ class BrandController extends Controller
         $brand->status = $request->status;
         $brand->save();
 
-        return back()->with('message', 'New Brand information added successfully');
+        return back()->with('success', 'New Brand information added successfully');
     }
 
     /**
@@ -110,7 +110,7 @@ class BrandController extends Controller
         $brand->status = $request->status;
         $brand->save();
 
-        return back()->with('message', 'Brand information updated successfully');
+        return back()->with('success', 'Brand information updated successfully');
     }
 
     /**

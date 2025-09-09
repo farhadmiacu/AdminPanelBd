@@ -19,10 +19,11 @@
     <!-- end page title -->
 
     <div class="row justify-content-center">
-        <div class="col-lg-8">
+        <div class="col-lg-12">
             <div class="card">
                 <div class="card-header align-items-center d-flex">
                     <h4 class="card-title mb-0 flex-grow-1">Categories list</h4>
+                    <a href="{{ route('admin.categories.create') }}" class="btn btn-sm btn-success">Add Category</a>
                 </div><!-- end card header -->
 
                 {{-- <div class="card-body">
@@ -128,4 +129,7 @@
             });
         });
     </script>
+
+    {{-- toastr notifications --}}
+    @include('backend.partials.notification-toastr')
 @endpush

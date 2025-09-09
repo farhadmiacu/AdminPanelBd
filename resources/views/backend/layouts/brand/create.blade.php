@@ -102,4 +102,6 @@
             document.getElementById('slug').value = slug;
         });
     </script>
+    {{-- sweet alert2 notifications --}}
+    @include('backend.partials.notification-sweetalert2')
 @endpush

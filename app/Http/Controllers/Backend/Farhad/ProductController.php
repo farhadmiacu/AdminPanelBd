@@ -92,7 +92,7 @@ class ProductController extends Controller
         $product->status = $request->status;
         $product->save();
 
-        return back()->with('message', 'New Product added successfully');
+        return back()->with('success', 'New Product added successfully');
     }
 
     /**
@@ -173,7 +173,7 @@ class ProductController extends Controller
         $product->status = $request->status;
         $product->save();
 
-        return back()->with('message', 'Product updated successfully');
+        return back()->with('success', 'Product updated successfully');
     }
 
     /**
