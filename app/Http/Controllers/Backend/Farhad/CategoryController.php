@@ -11,6 +11,15 @@ use Intervention\Image\Facades\Image;
 
 class CategoryController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware('can:category_view')->only(['index', 'show']);
+        $this->middleware('can:category_create')->only(['create', 'store']);
+        $this->middleware('can:category_edit')->only(['edit', 'update']);
+        $this->middleware('can:category_delete')->only(['destroy']);
+    }
+
     /**
      * Display a listing of the resource.
      */

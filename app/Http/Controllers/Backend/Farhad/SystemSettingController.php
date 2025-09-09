@@ -10,6 +10,13 @@ use Intervention\Image\Facades\Image;
 
 class SystemSettingController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware('can:system-settings_edit')->only(['edit']);
+        $this->middleware('can:system-settings_update')->only(['update']);
+    }
+
 
     public function edit()
     {

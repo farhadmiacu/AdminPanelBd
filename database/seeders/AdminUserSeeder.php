@@ -15,26 +15,30 @@ class AdminUserSeeder extends Seeder
      */
     public function run(): void
     {
-        // Create roles if they don't exist
+        // Create roles
         $adminRole = Role::firstOrCreate(['name' => 'admin']);
         $userRole  = Role::firstOrCreate(['name' => 'user']);
 
-        // Create Admin User
+        // Create admin user
         $admin = User::firstOrCreate(
             ['email' => 'admin@admin.com'],
             [
                 'name' => 'Admin',
+                'username' => 'admin',
                 'password' => Hash::make('12345678'),
+                'is_admin' => 1,
             ]
         );
         $admin->assignRole($adminRole);
 
-        // Create Normal User
+        // Create normal user
         $user = User::firstOrCreate(
             ['email' => 'user@user.com'],
             [
                 'name' => 'User',
+                'username' => 'user',
                 'password' => Hash::make('12345678'),
+                'is_admin' => 0,
             ]
         );
         $user->assignRole($userRole);

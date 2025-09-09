@@ -12,6 +12,15 @@ use Intervention\Image\Facades\Image;
 
 class ProductController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware('can:product_view')->only(['index', 'show']);
+        $this->middleware('can:product_create')->only(['create', 'store']);
+        $this->middleware('can:product_edit')->only(['edit', 'update']);
+        $this->middleware('can:product_delete')->only(['destroy']);
+    }
+
     /**
      * Display a listing of the resource.
      */

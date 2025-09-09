@@ -9,6 +9,15 @@ use App\Http\Controllers\Controller;
 
 class BrandController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware('can:brand_view')->only(['index', 'show']);
+        $this->middleware('can:brand_create')->only(['create', 'store']);
+        $this->middleware('can:brand_edit')->only(['edit', 'update']);
+        $this->middleware('can:brand_delete')->only(['destroy']);
+    }
+
     /**
      * Display a listing of the resource.
      */

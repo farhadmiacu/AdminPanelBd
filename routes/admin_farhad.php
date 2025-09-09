@@ -1,12 +1,14 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Backend\Farhad\RoleController;
 use App\Http\Controllers\Backend\Farhad\BrandController;
 use App\Http\Controllers\Backend\Farhad\StatusController;
 use App\Http\Controllers\Backend\Farhad\ProductController;
 use App\Http\Controllers\Backend\Farhad\CategoryController;
 use App\Http\Controllers\Backend\Farhad\DashboardController;
 use App\Http\Controllers\Backend\Farhad\SystemSettingController;
+use App\Http\Controllers\Backend\Farhad\UserController;
 
 Route::get('/admin/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
 
@@ -43,6 +45,26 @@ Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
     Route::get('system/settings', [SystemSettingController::class, 'edit'])->name('system-settings.edit');
     Route::post('system/settings', [SystemSettingController::class, 'update'])->name('system-settings.update');
 
+    // role routes
+    Route::get('roles', [RoleController::class, 'index'])->name('roles.index');
+    Route::get('roles/create', [RoleController::class, 'create'])->name('roles.create');
+    Route::post('roles', [RoleController::class, 'store'])->name('roles.store');
+    Route::get('roles/{role}', [RoleController::class, 'show'])->name('roles.show');
+    Route::get('roles/{role}/edit', [RoleController::class, 'edit'])->name('roles.edit');
+    Route::put('roles/{role}', [RoleController::class, 'update'])->name('roles.update');
+    Route::delete('roles/{role}', [RoleController::class, 'destroy'])->name('roles.destroy');
+
+    // users routes
+    Route::get('users', [UserController::class, 'index'])->name('users.index');
+    Route::get('users/create', [UserController::class, 'create'])->name('users.create');
+    Route::post('users', [UserController::class, 'store'])->name('users.store');
+    Route::get('users/{user}', [UserController::class, 'show'])->name('users.show');
+    Route::get('users/{user}/edit', [UserController::class, 'edit'])->name('users.edit');
+    Route::put('users/{user}', [UserController::class, 'update'])->name('users.update');
+    Route::delete('users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
+
+
     //status
+    // Route::post('/update-status', [StatusController::class, 'update'])->name('status.update')->middleware('can:status_update');
     Route::post('/update-status', [StatusController::class, 'update'])->name('status.update');
 });
