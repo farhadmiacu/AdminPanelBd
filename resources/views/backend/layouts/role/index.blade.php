@@ -50,14 +50,28 @@
                                                 <span class="text-muted">No Permissions</span>
                                             @endif
                                         </td>
-                                        <td>
+                                        {{-- <td>
                                             <a href="{{ route('admin.roles.edit', $role->id) }}" class="btn btn-sm btn-primary">Edit</a>
                                             <form action="{{ route('admin.roles.destroy', $role->id) }}" method="POST" style="display:inline-block;">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?')">Delete</button>
                                             </form>
+                                        </td> --}}
+                                        <td>
+                                            @can('role_edit')
+                                                <a href="{{ route('admin.roles.edit', $role->id) }}" class="btn btn-sm btn-primary">Edit</a>
+                                            @endcan
+
+                                            @can('role_delete')
+                                                <form action="{{ route('admin.roles.destroy', $role->id) }}" method="POST" style="display:inline-block;">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?')">Delete</button>
+                                                </form>
+                                            @endcan
                                         </td>
+
                                     </tr>
                                 @endforeach
                             </tbody>

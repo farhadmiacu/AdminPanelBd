@@ -70,7 +70,7 @@
                                             @endif
                                         </td>
                                         {{-- <td>{{ $category->status ? 'Active' : 'Inactive' }}</td> --}}
-                                        <td>
+                                        {{-- <td>
                                             <div class="form-check form-switch form-switch-right form-switch-md">
                                                 <input class="form-check-input status-switch" type="checkbox" data-id="{{ $category->id }}" data-type="category" {{ $category->status ? 'checked' : '' }}>
                                             </div>
@@ -82,7 +82,28 @@
                                                 @method('DELETE')
                                                 <button type="submit" class="btn btn-sm btn-danger">Delete</button>
                                             </form>
+                                        </td> --}}
+                                        <td>
+                                            <div class="form-check form-switch form-switch-right form-switch-md">
+                                                <input class="form-check-input status-switch" type="checkbox" data-id="{{ $category->id }}" data-type="category" {{ $category->status ? 'checked' : '' }}
+                                                    @cannot('category_edit') disabled @endcannot>
+                                            </div>
                                         </td>
+
+                                        <td>
+                                            @can('category_edit')
+                                                <a href="{{ route('admin.categories.edit', $category->id) }}" class="btn btn-sm btn-primary">Edit</a>
+                                            @endcan
+
+                                            @can('category_delete')
+                                                <form action="{{ route('admin.categories.destroy', $category->id) }}" method="POST" style="display:inline-block;">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                                </form>
+                                            @endcan
+                                        </td>
+
                                     </tr>
                                 @endforeach
                             </tbody>

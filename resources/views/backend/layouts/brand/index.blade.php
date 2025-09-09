@@ -78,19 +78,39 @@
                                             </div>
                                         </td> --}}
 
-                                        <td>
+                                        {{-- <td>
                                             <div class="form-check form-switch form-switch-right form-switch-md">
                                                 <input class="form-check-input status-switch" type="checkbox" data-id="{{ $brand->id }}" data-type="brand" {{ $brand->status ? 'checked' : '' }}>
                                             </div>
+                                        </td> --}}
+                                        <td>
+                                            <div class="form-check form-switch form-switch-right form-switch-md">
+                                                <input class="form-check-input status-switch" type="checkbox" data-id="{{ $brand->id }}" data-type="brand" {{ $brand->status ? 'checked' : '' }}
+                                                    @cannot('brand_edit') disabled @endcannot>
+                                            </div>
                                         </td>
 
-                                        <td>
+                                        {{-- <td>
                                             <a href="{{ route('admin.brands.edit', $brand->id) }}" class="btn btn-sm btn-primary">Edit</a>
                                             <form action="{{ route('admin.brands.destroy', $brand->id) }}" method="POST" style="display:inline-block;">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="btn btn-sm btn-danger">Delete</button>
                                             </form>
+                                        </td> --}}
+
+                                        <td>
+                                            @can('brand_edit')
+                                                <a href="{{ route('admin.brands.edit', $brand->id) }}" class="btn btn-sm btn-primary">Edit</a>
+                                            @endcan
+
+                                            @can('brand_delete')
+                                                <form action="{{ route('admin.brands.destroy', $brand->id) }}" method="POST" style="display:inline-block;">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                                </form>
+                                            @endcan
                                         </td>
                                     </tr>
                                 @endforeach

@@ -53,7 +53,7 @@
                                         <td>{{ $user->name }}</td>
                                         <td>{{ $user->email }}</td>
                                         <td>
-                                            @if($user->roles->count())
+                                            @if ($user->roles->count())
                                                 @foreach ($user->roles as $role)
                                                     <span class="badge bg-primary" style="font-size: 0.75rem;">{{ $role->name }}</span>
                                                 @endforeach
@@ -61,7 +61,7 @@
                                                 <span class="text-muted">No Role</span>
                                             @endif
                                         </td>
-                                        <td>
+                                        {{-- <td>
                                             <div class="form-check form-switch form-switch-right form-switch-md">
                                                 <input class="form-check-input status-switch" type="checkbox" data-id="{{ $user->id }}" data-type="user" {{ $user->status ? 'checked' : '' }}>
                                             </div>
@@ -73,7 +73,29 @@
                                                 @method('DELETE')
                                                 <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?')">Delete</button>
                                             </form>
+                                        </td> --}}
+
+                                        <td>
+                                            <div class="form-check form-switch form-switch-right form-switch-md">
+                                                <input class="form-check-input status-switch" type="checkbox" data-id="{{ $user->id }}" data-type="user" {{ $user->status ? 'checked' : '' }}
+                                                    @cannot('user_edit') disabled @endcannot>
+                                            </div>
                                         </td>
+
+                                        <td>
+                                            @can('user_edit')
+                                                <a href="{{ route('admin.users.edit', $user->id) }}" class="btn btn-sm btn-primary">Edit</a>
+                                            @endcan
+
+                                            @can('user_delete')
+                                                <form action="{{ route('admin.users.destroy', $user->id) }}" method="POST" style="display:inline-block;">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?')">Delete</button>
+                                                </form>
+                                            @endcan
+                                        </td>
+
                                     </tr>
                                 @endforeach
                             </tbody>

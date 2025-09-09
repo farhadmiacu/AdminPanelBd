@@ -70,7 +70,8 @@
                             <div class="col-xxl-6 col-md-6">
                                 <div>
                                     <label for="system_title" class="form-label">System Title</label>
-                                    <input type="text" name="system_title" id="system_title" class="form-control" placeholder="Enter system title" value="{{ old('system_title', $setting->system_title ?? '') }}">
+                                    <input type="text" name="system_title" id="system_title" class="form-control" placeholder="Enter system title"
+                                        value="{{ old('system_title', $setting->system_title ?? '') }}">
                                     @error('system_title')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
@@ -81,7 +82,8 @@
                             <div class="col-xxl-6 col-md-6">
                                 <div>
                                     <label for="company_name" class="form-label">Company Name</label>
-                                    <input type="text" name="company_name" id="company_name" class="form-control" placeholder="Enter company name" value="{{ old('company_name', $setting->company_name ?? '') }}">
+                                    <input type="text" name="company_name" id="company_name" class="form-control" placeholder="Enter company name"
+                                        value="{{ old('company_name', $setting->company_name ?? '') }}">
                                     @error('company_name')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
@@ -103,7 +105,8 @@
                             <div class="col-xxl-6 col-md-6">
                                 <div>
                                     <label for="phone_number" class="form-label">Phone Number</label>
-                                    <input type="text" name="phone_number" id="phone_number" class="form-control" placeholder="Enter phone number" value="{{ old('phone_number', $setting->phone_number ?? '') }}">
+                                    <input type="text" name="phone_number" id="phone_number" class="form-control" placeholder="Enter phone number"
+                                        value="{{ old('phone_number', $setting->phone_number ?? '') }}">
                                     @error('phone_number')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
@@ -114,7 +117,8 @@
                             <div class="col-xxl-6 col-md-6">
                                 <div>
                                     <label for="whatsapp_number" class="form-label">WhatsApp Number</label>
-                                    <input type="text" name="whatsapp_number" id="whatsapp_number" class="form-control" placeholder="Enter WhatsApp number" value="{{ old('whatsapp_number', $setting->whatsapp_number ?? '') }}">
+                                    <input type="text" name="whatsapp_number" id="whatsapp_number" class="form-control" placeholder="Enter WhatsApp number"
+                                        value="{{ old('whatsapp_number', $setting->whatsapp_number ?? '') }}">
                                     @error('whatsapp_number')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
@@ -136,7 +140,8 @@
                             <div class="col-xxl-12 col-md-12">
                                 <div>
                                     <label for="copyright_text" class="form-label">Copyright Text</label>
-                                    <input type="text" name="copyright_text" id="copyright_text" class="form-control" placeholder="Enter copyright text" value="{{ old('copyright_text', $setting->copyright_text ?? '') }}">
+                                    <input type="text" name="copyright_text" id="copyright_text" class="form-control" placeholder="Enter copyright text"
+                                        value="{{ old('copyright_text', $setting->copyright_text ?? '') }}">
                                     @error('copyright_text')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
