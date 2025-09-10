@@ -113,6 +113,4 @@
         });
     </script>
 
-    {{-- toastr notifications --}}
-    @include('backend.partials.notification-toastr')
 @endpush

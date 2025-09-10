@@ -112,15 +112,15 @@
 
 {{-- Push the script --}}
 @push('scripts')
-    {{-- <script>
+    <script>
         $(document).ready(function() {
             $('#categoriesTable').DataTable({
                 responsive: true,
             });
 
         });
-    </script> --}}
-    <script>
+    </script>
+    {{-- <script>
         $(document).ready(function() {
             // Initialize DataTable
             var table = $('#categoriesTable').DataTable({
@@ -137,7 +137,7 @@
                 });
             }, 100);
         });
-    </script>
+    </script> --}}
 
     {{-- password delete  --}}
     <script>
@@ -210,7 +210,4 @@
             });
         });
     </script>
-
-    {{-- sweet alert2 notifications --}}
-    @include('backend.partials.notification-sweetalert2')
 @endpush

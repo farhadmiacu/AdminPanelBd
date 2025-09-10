@@ -102,20 +102,4 @@
             document.getElementById('slug').value = slug;
         });
     </script>
-
-    <script>
-        $(document).ready(function() {
-            $('.dropify').dropify({
-                messages: {
-                    'default': 'Drag and drop here or click',
-                    'replace': 'Drag and drop or click to replace',
-                    'remove': 'Remove file',
-                    'error': 'Ooops! something went wrong.'
-                }
-            });
-
-        });
-    </script>
-    {{-- sweet alert2 notifications --}}
-    @include('backend.partials.notification-sweetalert2')
 @endpush

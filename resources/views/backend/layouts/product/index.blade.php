@@ -98,6 +98,4 @@
             });
         });
     </script>
-    {{-- iziToast  --}}
-    @include('backend.partials.notification-iziToast')
 @endpush

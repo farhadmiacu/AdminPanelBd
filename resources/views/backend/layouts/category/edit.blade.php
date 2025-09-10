@@ -101,21 +101,4 @@
             document.getElementById('slug').value = slug;
         });
     </script>
-    <script>
-        $(document).ready(function() {
-            // Initialize Dropify
-            $('.dropify').dropify({
-                messages: {
-                    'default': 'Drag and drop here or click',
-                    'replace': 'Drag and drop or click to replace',
-                    'remove': 'Remove file',
-                    'error': 'Ooops! something went wrong.'
-                }
-            });
-
-        });
-    </script>
-
-    {{-- toastr notifications --}}
-    @include('backend.partials.notification-toastr')
 @endpush

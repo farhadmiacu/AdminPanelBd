@@ -188,25 +188,9 @@
             document.getElementById('slug').value = slug;
         });
     </script>
-
-    <script>
-        $(document).ready(function() {
-            $('.dropify').dropify({
-                messages: {
-                    'default': 'Drag and drop here or click',
-                    'replace': 'Drag and drop or click to replace',
-                    'remove': 'Remove file',
-                    'error': 'Ooops! something went wrong.'
-                }
-            });
-        });
-    </script>
-
     <script>
         ClassicEditor.create(document.querySelector('#long_description')).catch(error => {
             console.error(error);
         });
     </script>
-    {{-- iziToast  --}}
-    @include('backend.partials.notification-iziToast')
 @endpush

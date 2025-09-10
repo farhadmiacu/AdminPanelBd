@@ -134,17 +134,5 @@
 
 {{-- Push the script --}}
 @push('scripts')
-    <script>
-        $(document).ready(function() {
-            // Initialize Dropify
-            $('.dropify').dropify({
-                messages: {
-                    'default': 'Drag and drop here or click',
-                    'replace': 'Drag and drop or click to replace',
-                    'remove': 'Remove file',
-                    'error': 'Ooops! something went wrong.'
-                }
-            });
-        });
-    </script>
+    
 @endpush

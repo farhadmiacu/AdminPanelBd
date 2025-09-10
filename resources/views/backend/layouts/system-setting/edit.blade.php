@@ -166,16 +166,5 @@
 
 {{-- Push the script --}}
 @push('scripts')
-    <script>
-        $(document).ready(function() {
-            $('.dropify').dropify({
-                messages: {
-                    'default': 'Drag or click',
-                    'replace': 'Drag or click to replace',
-                    'remove': 'Remove file',
-                    'error': 'Ooops! something went wrong.'
-                }
-            });
-        });
-    </script>
+
 @endpush

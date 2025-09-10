@@ -109,10 +109,13 @@
 
     {{-- @include('backend.partials.theme-setting') --}}
 
+    {{-- scripts (all plugins and links here) --}}
     @include('backend.partials.script')
-    @include('backend.partials.notification-sweetalert2-delete')
-
+    {{-- custom scripts --}}
+    @include('backend.partials.sweetalert2Dropify')
+    {{-- push scripts --}}
     @stack('scripts')
+
 </body>
 
 </html>
