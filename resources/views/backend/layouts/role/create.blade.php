@@ -23,7 +23,7 @@
             <div class="card">
                 <div class="card-header align-items-center d-flex">
                     <h4 class="card-title mb-0 flex-grow-1">Role Create</h4>
-                </div><!-- end card header -->
+                </div>
 
                 <form action="{{ route('admin.roles.store') }}" method="POST">
                     @csrf

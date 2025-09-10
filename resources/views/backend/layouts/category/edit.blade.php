@@ -22,8 +22,7 @@
             <div class="card">
                 <div class="card-header align-items-center d-flex">
                     <h4 class="card-title mb-0 flex-grow-1">Edit Category</h4>
-                </div><!-- end card header -->
-
+                </div>
                 <form action="{{ route('admin.categories.update', $category->id) }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     @method('PUT') {{-- Important for update --}}

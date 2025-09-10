@@ -24,7 +24,7 @@
                 <div class="card-header align-items-center d-flex">
                     <h4 class="card-title mb-0 flex-grow-1">Categories list</h4>
                     <a href="{{ route('admin.categories.create') }}" class="btn btn-sm btn-success">Add Category</a>
-                </div><!-- end card header -->
+                </div>
 
                 {{-- <div class="card-body">
                     <div class="row gy-4">
@@ -70,27 +70,12 @@
                                                 <span class="text-muted">No Image</span>
                                             @endif
                                         </td>
-                                        {{-- <td>{{ $category->status ? 'Active' : 'Inactive' }}</td> --}}
-                                        {{-- <td>
-                                            <div class="form-check form-switch form-switch-right form-switch-md">
-                                                <input class="form-check-input status-switch" type="checkbox" data-id="{{ $category->id }}" data-type="category" {{ $category->status ? 'checked' : '' }}>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <a href="{{ route('admin.categories.edit', $category->id) }}" class="btn btn-sm btn-primary">Edit</a>
-                                            <form action="{{ route('admin.categories.destroy', $category->id) }}" method="POST" style="display:inline-block;">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-sm btn-danger">Delete</button>
-                                            </form>
-                                        </td> --}}
                                         <td>
                                             <div class="form-check form-switch form-switch-right form-switch-md">
                                                 <input class="form-check-input status-switch" type="checkbox" data-id="{{ $category->id }}" data-type="category" {{ $category->status ? 'checked' : '' }}
                                                     @cannot('category_edit') disabled @endcannot>
                                             </div>
                                         </td>
-
                                         <td>
                                             @can('category_edit')
                                                 <a href="{{ route('admin.categories.edit', $category->id) }}" class="btn btn-sm btn-primary">Edit</a>
@@ -104,7 +89,6 @@
                                                 </form>
                                             @endcan
                                         </td>
-
                                     </tr>
                                 @endforeach
                             </tbody>
@@ -125,7 +109,6 @@
         $(document).ready(function() {
             $('#categoriesTable').DataTable({
                 responsive: true,
-
             });
         });
     </script>

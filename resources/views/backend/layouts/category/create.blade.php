@@ -23,7 +23,7 @@
             <div class="card">
                 <div class="card-header align-items-center d-flex">
                     <h4 class="card-title mb-0 flex-grow-1">Category Create</h4>
-                </div><!-- end card header -->
+                </div>
 
                 <form action="{{ route('admin.categories.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
@@ -104,7 +104,6 @@
     </script>
     <script>
         $(document).ready(function() {
-            // Initialize Dropify
             $('.dropify').dropify({
                 messages: {
                     'default': 'Drag and drop here or click',

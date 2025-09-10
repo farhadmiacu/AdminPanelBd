@@ -56,28 +56,12 @@
                                                 <span class="text-muted">No Image</span>
                                             @endif
                                         </td>
-                                        {{-- <td>{{ $product->status ? 'Active' : 'Inactive' }}</td> --}}
-                                        {{-- <td>
-                                            <div class="form-check form-switch form-switch-right form-switch-md">
-                                                <input class="form-check-input status-switch" type="checkbox" data-id="{{ $product->id }}" data-type="product" {{ $product->status ? 'checked' : '' }}>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <a href="{{ route('admin.products.edit', $product->id) }}" class="btn btn-sm btn-primary">Edit</a>
-                                            <form action="{{ route('admin.products.destroy', $product->id) }}" method="POST" style="display:inline-block;">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?')">Delete</button>
-                                            </form>
-                                        </td> --}}
-
                                         <td>
                                             <div class="form-check form-switch form-switch-right form-switch-md">
                                                 <input class="form-check-input status-switch" type="checkbox" data-id="{{ $product->id }}" data-type="product" {{ $product->status ? 'checked' : '' }}
                                                     @cannot('product_edit') disabled @endcannot>
                                             </div>
                                         </td>
-
                                         <td>
                                             @can('product_edit')
                                                 <a href="{{ route('admin.products.edit', $product->id) }}" class="btn btn-sm btn-primary">Edit</a>
@@ -91,7 +75,6 @@
                                                 </form>
                                             @endcan
                                         </td>
-
                                     </tr>
                                 @endforeach
                             </tbody>

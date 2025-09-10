@@ -23,7 +23,7 @@
                 <div class="card-header align-items-center d-flex">
                     <h4 class="card-title mb-0 flex-grow-1">Roles List</h4>
                     <a href="{{ route('admin.roles.create') }}" class="btn btn-sm btn-success">Add Role</a>
-                </div><!-- end card header -->
+                </div>
 
                 <div class="card-body">
                     <div class="table-responsive">
@@ -50,14 +50,6 @@
                                                 <span class="text-muted">No Permissions</span>
                                             @endif
                                         </td>
-                                        {{-- <td>
-                                            <a href="{{ route('admin.roles.edit', $role->id) }}" class="btn btn-sm btn-primary">Edit</a>
-                                            <form action="{{ route('admin.roles.destroy', $role->id) }}" method="POST" style="display:inline-block;">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?')">Delete</button>
-                                            </form>
-                                        </td> --}}
                                         <td>
                                             @can('role_edit')
                                                 <a href="{{ route('admin.roles.edit', $role->id) }}" class="btn btn-sm btn-primary">Edit</a>

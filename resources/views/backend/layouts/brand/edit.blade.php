@@ -105,7 +105,6 @@
 
     <script>
         $(document).ready(function() {
-            // Initialize Dropify
             $('.dropify').dropify({
                 messages: {
                     'default': 'Drag and drop here or click',
