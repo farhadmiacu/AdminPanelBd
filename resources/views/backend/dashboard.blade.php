@@ -167,6 +167,7 @@
 
             </div> <!-- end .h-100-->
 
-        </div> <!-- end col -->
+        </div>
+        <!-- end col -->
     </div>
 @endsection
