@@ -42,7 +42,6 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        // return $request;
         $request->validate([
             'name' => 'required|string|unique:categories,name|max:255',
             // 'slug' => 'required|string|unique:categories,slug|max:255',
@@ -51,6 +50,8 @@ class CategoryController extends Controller
         ]);
 
         // Handle image upload
+        $imageUrl = null;
+
         if ($request->file('image')) {
             $image     = $request->file('image');
             $imageName = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
@@ -59,12 +60,13 @@ class CategoryController extends Controller
             if (!file_exists(public_path($directory))) {
                 mkdir(public_path($directory), 0755, true);
             }
-            // $image->move($directory, $imageName);
-            $resizedImage = Image::make($image)->resize(60, 60); // Resize to 60x60 (image intervention)
+            // $image->move($directory, $imageName); //for normal image upload
+
+            // Resize to 60x60 (image intervention)
+            $resizedImage = Image::make($image)->resize(60, 60);
             $resizedImage->save(public_path($directory . $imageName));
+
             $imageUrl = $directory . $imageName;
-        } else {
-            $imageUrl = null;
         }
 
         $category                 = new Category();
@@ -73,6 +75,7 @@ class CategoryController extends Controller
         $category->image          = $imageUrl;
         $category->status         = $request->status;
         $category->save();
+
         return back()->with('success', 'New Category information added successfully');
     }
 
@@ -99,16 +102,17 @@ class CategoryController extends Controller
     public function update(Request $request, $id)
     {
         $category = Category::findOrFail($id);
+
         $request->validate([
-            'name' => 'required|string|max:255|unique:categories,name,' . $category->id . ',id',
+            'name' => 'required|string|max:255|unique:categories,name,' . $category->id,
             // 'slug' => 'required|string|unique:categories,slug|max:255',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
             'status' => 'required|in:0,1',
         ]);
 
-        // Image upload or keep old
+        // Image update or keep old or remove
+        $imageUrl = $category->image;
         if ($request->file('image')) {
-            // Remove existing image if any
             if ($category->image && file_exists($category->image)) {
                 unlink($category->image);
             }
@@ -119,13 +123,16 @@ class CategoryController extends Controller
             $directory = 'uploads/categories-images/';
             // $image->move($directory, $imageName);
 
-            // Resize to 60x60 (image intervention)
-            $resizedImage = Image::make($image)->resize(60, 60);
+            $resizedImage = Image::make($image)->resize(60, 60); // Resize to 60x60 (image intervention)
             $resizedImage->save(public_path($directory . $imageName));
-
             $imageUrl = $directory . $imageName;
-        } else {
-            $imageUrl = $category->image;
+        }
+        // Check if removed the image
+        elseif ($request->input('image') === null) {
+            if ($category->image && file_exists(public_path($category->image))) {
+                unlink(public_path($category->image));
+            }
+            $imageUrl = null;
         }
 
         $category->name           = $request->name;
@@ -154,7 +161,7 @@ class CategoryController extends Controller
         Product::where('category_id', $category->id)
             ->update(['category_id' => $uncategorizedId]);
 
-        // Check if image is not null and file exists before unlinking
+        // Delete image if exists
         if ($category->image && file_exists($category->image)) {
             unlink($category->image);
         }

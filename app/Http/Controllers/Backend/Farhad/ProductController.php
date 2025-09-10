@@ -60,7 +60,7 @@ class ProductController extends Controller
         ]);
 
         // Handle image upload
-        $imageUrl = null; // default
+        $imageUrl = null;
 
         if ($request->file('image')) {
             $image     = $request->file('image');
@@ -70,7 +70,7 @@ class ProductController extends Controller
             if (!file_exists(public_path($directory))) {
                 mkdir(public_path($directory), 0755, true);
             }
-            $resizedImage = Image::make($image)->resize(300, 300); // Resize to 300x300
+            $resizedImage = Image::make($image)->resize(300, 300);
             $resizedImage->save(public_path($directory . $imageName));
             $imageUrl = $directory . $imageName;
         }
@@ -79,7 +79,6 @@ class ProductController extends Controller
 
         $product = new Product();
         $product->name = $request->name;
-        // $product->slug = Str::slug($request->name);
         $product->category_id = $request->category_id;
         $product->brand_id = $request->brand_id;
         $product->code = $request->code;
@@ -136,23 +135,24 @@ class ProductController extends Controller
             'status' => 'required|in:0,1',
         ]);
 
-        // Image upload or keep old
+        // Image update or keep old or remove
         $imageUrl = $product->image; // default: keep old image
         if ($request->file('image')) {
             if ($product->image && file_exists($product->image)) {
                 unlink($product->image);
             }
 
+            // Upload new image
             $image     = $request->file('image');
             $imageName = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
             $directory = 'uploads/products-images/';
+
             $resizedImage = Image::make($image)->resize(300, 300);
             $resizedImage->save(public_path($directory . $imageName));
             $imageUrl = $directory . $imageName;
         }
-        // Check if Dropify removed the image
+        // Check if removed the image
         elseif ($request->input('image') === null) {
-            // Delete old image
             if ($product->image && file_exists(public_path($product->image))) {
                 unlink(public_path($product->image));
             }
@@ -160,7 +160,6 @@ class ProductController extends Controller
         }
 
         $product->name = $request->name;
-        // $product->slug = Str::slug($request->name);
         $product->category_id = $request->category_id;
         $product->brand_id = $request->brand_id;
         $product->code = $request->code;

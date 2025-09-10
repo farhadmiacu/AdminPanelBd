@@ -6,6 +6,7 @@ use App\Models\Brand;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Intervention\Image\Facades\Image;
 
 class BrandController extends Controller
 {
@@ -47,19 +48,24 @@ class BrandController extends Controller
         ]);
 
         // Handle image upload
+        $imageUrl = null;
+
         if ($request->file('image')) {
             $image     = $request->file('image');
             $imageName = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
             $directory = 'uploads/brands-images/';
-            $image->move($directory, $imageName);
+            // Create directory if it doesn't exist
+            if (!file_exists(public_path($directory))) {
+                mkdir(public_path($directory), 0755, true);
+            }
+            $resizedImage = Image::make($image)->resize(60, 60);
+            $resizedImage->save(public_path($directory . $imageName));
+
             $imageUrl = $directory . $imageName;
-        } else {
-            $imageUrl = null;
         }
 
         $brand = new Brand();
         $brand->name   = $request->name;
-        // $brand->slug = Str::slug($request->name); // slug handled in model
         $brand->image  = $imageUrl;
         $brand->status = $request->status;
         $brand->save();
@@ -89,23 +95,30 @@ class BrandController extends Controller
             'status' => 'required|in:0,1',
         ]);
 
-        // Image upload or keep old
+        // Image update or keep old or remove
+        $imageUrl = $brand->image;
         if ($request->file('image')) {
             if ($brand->image && file_exists($brand->image)) {
                 unlink($brand->image);
             }
 
+            // Upload new image
             $image     = $request->file('image');
             $imageName = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
             $directory = 'uploads/brands-images/';
-            $image->move($directory, $imageName);
+            $resizedImage = Image::make($image)->resize(60, 60); // Resize to 60x60 (image intervention)
+            $resizedImage->save(public_path($directory . $imageName));
             $imageUrl = $directory . $imageName;
-        } else {
-            $imageUrl = $brand->image;
+        }
+        // Check if removed the image
+        elseif ($request->input('image') === null) {
+            if ($brand->image && file_exists(public_path($brand->image))) {
+                unlink(public_path($brand->image));
+            }
+            $imageUrl = null;
         }
 
         $brand->name   = $request->name;
-        // $brand->slug = Str::slug($request->name); // slug handled in model
         $brand->image  = $imageUrl;
         $brand->status = $request->status;
         $brand->save();
@@ -139,8 +152,8 @@ class BrandController extends Controller
 
         // return redirect()->back()->with('success', 'Brand deleted and products reassigned.');
         return response()->json([
-        'success' => true,
-        'message' => 'Brand deleted and products reassigned.'
-    ]);
+            'success' => true,
+            'message' => 'Brand deleted and products reassigned.'
+        ]);
     }
 }
