@@ -32,6 +32,12 @@
 {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/js/iziToast.min.js"></script> --}}
 <!-- Dropzone JS -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.3/dropzone.min.js"></script>
+<!-- FilePond JS -->
+<script src="https://unpkg.com/filepond@^4/dist/filepond.js"></script>
+<!-- FilePond Plugins (optional, for image preview and validation) -->
+<script src="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.js"></script>
+<script src="https://unpkg.com/filepond-plugin-file-validate-type/dist/filepond-plugin-file-validate-type.js"></script>
+<script src="https://unpkg.com/filepond-plugin-file-validate-size/dist/filepond-plugin-file-validate-size.js"></script>
 <!-- Dashboard init -->
 <script src="{{ asset('/') }}backend/assets/js/pages/dashboard-ecommerce.init.js"></script>
 <!-- App js -->

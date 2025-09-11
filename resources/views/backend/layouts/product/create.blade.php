@@ -24,7 +24,7 @@
                     <h4 class="card-title mb-0 flex-grow-1">Product Create</h4>
                 </div>
 
-                <form action="{{ route('admin.products.store') }}" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('admin.products.store') }}" method="POST" enctype="multipart/form-data" id="productForm">
                     @csrf
 
                     <div class="card-body">
@@ -100,7 +100,7 @@
                             </div>
 
                             {{-- Product Multi Images --}}
-                            <div class="col-xxl-12 col-md-12 mt-3">
+                            {{-- <div class="col-xxl-12 col-md-12 mt-3">
                                 <div>
                                     <label for="multi_images" class="form-label">Product Multi Images</label>
                                     <input type="file" name="multi_images[]" id="multi_images" class="form-control" multiple data-allowed-file-extensions="jpg jpeg png gif">
@@ -113,7 +113,15 @@
                                         @endforeach
                                     @enderror
                                 </div>
+                            </div> --}}
+                            <div class="col-xxl-12 col-md-12 mt-3">
+                                <label class="form-label">Product Multi Images</label>
+                                <input type="file" class="filepond" name="multi_images[]" id="multi_images" multiple>
+                                <div id="multi_images_error" class="text-danger"></div>
                             </div>
+
+                            {{-- Hidden field to store file metadata --}}
+                            <input type="hidden" name="filepond_files" id="filepond_files">
 
                             {{-- Short Description --}}
                             <div class="col-xxl-12 col-md-12">
@@ -202,6 +210,42 @@
                 .replace(/\s+/g, '-') // replace spaces with -
                 .replace(/-+/g, '-'); // remove multiple -
             document.getElementById('slug').value = slug;
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize FilePond for multi-image upload
+            FilePond.registerPlugin(
+                FilePondPluginImagePreview,
+                FilePondPluginFileValidateType,
+                FilePondPluginFileValidateSize
+            );
+
+            // Get a reference to the file input element
+            const inputElement = document.querySelector('input[id="multi_images"]');
+
+            // Create a FilePond instance
+            const pond = FilePond.create(inputElement, {
+                allowMultiple: true,
+                maxFiles: 10,
+                acceptedFileTypes: ['image/*'],
+                maxFileSize: '5MB',
+                labelIdle: 'Drag & Drop your images or <span class="filepond--label-action">Browse</span>',
+                storeAsFile: true, // This ensures files are stored as actual files
+            });
+
+            // Handle form submission (without form id works too)
+            document.getElementById('productForm').addEventListener('submit', function(e) {
+                // FilePond will automatically sync files with the input element
+                console.log('Form submitted with files:', pond.getFiles());
+
+                // If you need to do any additional processing, do it here
+                const files = pond.getFiles();
+                const fileData = files.map(file => file.file.name);
+
+                // Store file metadata in hidden field if needed
+                document.getElementById('filepond_files').value = JSON.stringify(fileData);
+            });
         });
     </script>
 

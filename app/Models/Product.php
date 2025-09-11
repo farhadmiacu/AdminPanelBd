@@ -50,4 +50,8 @@ class Product extends Model
     {
         return $this->hasMany(LongDescriptionImage::class);
     }
+    public function productMultiImages()
+    {
+        return $this->hasMany(ProductMultiImage::class);
+    }
 }

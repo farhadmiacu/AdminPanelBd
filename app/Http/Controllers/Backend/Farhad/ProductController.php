@@ -46,6 +46,7 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
+        // return $request->all();
         $request->validate([
             'name' => 'required|string|unique:products,name|max:255',
             'category_id' => 'required|exists:categories,id',
@@ -193,6 +194,43 @@ class ProductController extends Controller
 
         $this->syncLongDescriptionImages($product, $request->long_description);
 
+
+        if ($request->filled('removed_images')) {
+            $removedIds = json_decode($request->removed_images, true);
+            foreach ($removedIds as $id) {
+                $img = ProductMultiImage::find($id);
+                if ($img) {
+                    // Delete image file if needed
+                    @unlink(public_path($img->image));
+                    $img->delete();
+                }
+            }
+        }
+
+        // Check if new multiple images uploaded
+        if ($request->hasFile('multi_images')) {
+            // Delete old images (both from DB and storage)
+            $oldImages = ProductMultiImage::where('product_id', $product->id)->get();
+            foreach ($oldImages as $oldImage) {
+                if (file_exists(public_path($oldImage->image))) {
+                    unlink(public_path($oldImage->image));
+                }
+                $oldImage->delete();
+            }
+
+            // Save new images
+            foreach ($request->file('multi_images') as $multiImage) {
+                $multiName = time() . '_' . uniqid() . '.' . $multiImage->getClientOriginalExtension();
+                $directory = 'uploads/products-images/multi/';
+                $multiImage->move(public_path($directory), $multiName);
+
+                $productImage = new ProductMultiImage();
+                $productImage->product_id = $product->id;
+                $productImage->image = $directory . $multiName;
+                $productImage->save();
+            }
+        }
+
         return back()->with('success', 'Product updated successfully');
     }
 
@@ -206,6 +244,15 @@ class ProductController extends Controller
         // Remove image if exists
         if ($product->image && file_exists($product->image)) {
             unlink($product->image);
+        }
+
+        // ✅ Delete all multi images (physical + DB)
+        $multiImages = ProductMultiImage::where('product_id', $id)->get();
+        foreach ($multiImages as $multiImage) {
+            if (file_exists($multiImage->image)) {
+                unlink($multiImage->image);
+            }
+            $multiImage->delete();
         }
 
         // ✅ Delete all long description images (physical + DB)

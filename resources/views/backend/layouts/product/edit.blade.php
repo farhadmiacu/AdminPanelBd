@@ -1,5 +1,11 @@
 @extends('backend.master')
 @section('content')
+    @php
+        // Prepare existing images from DB
+        $existingImages = $product->productMultiImages->map(function ($img) {
+            return asset($img->image); // use "image" column
+        });
+    @endphp
     <!-- start page title -->
     <div class="row">
         <div class="col-12">
@@ -23,7 +29,7 @@
                     <h4 class="card-title mb-0 flex-grow-1">Product Edit</h4>
                 </div>
 
-                <form action="{{ route('admin.products.update', $product->id) }}" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('admin.products.update', $product->id) }}" method="POST" enctype="multipart/form-data" id="productForm">
                     @csrf
                     @method('PUT')
 
@@ -103,6 +109,14 @@
                                     @enderror
                                 </div>
                             </div>
+
+                            {{-- Multi Images --}}
+                            <div class="col-xxl-12 col-md-12 mt-3">
+                                <label class="form-label">Product Multi Images</label>
+                                <input type="file" class="filepond" name="multi_images[]" id="multi_images" multiple>
+                                <div id="multi_images_error" class="text-danger"></div>
+                            </div>
+                            <input type="hidden" name="filepond_files" id="filepond_files">
 
                             {{-- Short Description --}}
                             <div class="col-xxl-12 col-md-12">
@@ -186,6 +200,42 @@
                 .replace(/\s+/g, '-')
                 .replace(/-+/g, '-');
             document.getElementById('slug').value = slug;
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize FilePond for multi-image upload
+            FilePond.registerPlugin(
+                FilePondPluginImagePreview,
+                FilePondPluginFileValidateType,
+                FilePondPluginFileValidateSize
+            );
+
+            // Get a reference to the file input element
+            const inputElement = document.querySelector('input[id="multi_images"]');
+
+            // Create a FilePond instance
+            const pond = FilePond.create(inputElement, {
+                allowMultiple: true,
+                maxFiles: 10,
+                acceptedFileTypes: ['image/*'],
+                maxFileSize: '5MB',
+                labelIdle: 'Drag & Drop your images or <span class="filepond--label-action">Browse</span>',
+                storeAsFile: true, // This ensures files are stored as actual files
+            });
+
+            // Handle form submission (without form id works too)
+            document.getElementById('productForm').addEventListener('submit', function(e) {
+                // FilePond will automatically sync files with the input element
+                console.log('Form submitted with files:', pond.getFiles());
+
+                // If you need to do any additional processing, do it here
+                const files = pond.getFiles();
+                const fileData = files.map(file => file.file.name);
+
+                // Store file metadata in hidden field if needed
+                document.getElementById('filepond_files').value = JSON.stringify(fileData);
+            });
         });
     </script>
 
