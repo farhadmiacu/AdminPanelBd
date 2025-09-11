@@ -74,4 +74,5 @@ Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
 
     // CKEditor image upload
     Route::post('/ckeditor/upload', [ProductController::class, 'uploadCkEditorImage'])->name('ckeditor.upload');
+    Route::delete('/ckeditor/remove', [ProductController::class, 'removeCkEditorImage']) ->name('ckeditor.remove');
 });

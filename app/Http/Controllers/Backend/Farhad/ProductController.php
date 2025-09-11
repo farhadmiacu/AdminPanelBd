@@ -268,29 +268,6 @@ class ProductController extends Controller
         return redirect()->back()->with('success', 'Product deleted successfully');
     }
 
-    // ✅ CKEditor Upload Handler
-    public function uploadCkEditorImage(Request $request)
-    {
-        if ($request->hasFile('upload')) {
-            $file = $request->file('upload');
-            $filename = uniqid() . '.' . $file->getClientOriginalExtension();
-
-            $destination = public_path('uploads/products-images/long-description-images/');
-            if (!file_exists($destination)) {
-                mkdir($destination, 0777, true);
-            }
-
-            $file->move($destination, $filename);
-
-            $url = asset('uploads/products-images/long-description-images/' . $filename);
-
-            return response()->json([
-                'url' => $url
-            ]);
-        }
-
-        return response()->json(['error' => 'No file uploaded'], 400);
-    }
 
     // ✅ Sync images with DB + Physical Deletion
     protected function syncLongDescriptionImages(Product $product, $html)
@@ -323,5 +300,43 @@ class ProductController extends Controller
                 'image_path' => $path
             ]);
         }
+    }
+
+    public function uploadCkEditorImage(Request $request)
+    {
+        if ($request->hasFile('upload')) {
+            $file = $request->file('upload');
+            $filename = uniqid() . '.' . $file->getClientOriginalExtension();
+
+            $destination = public_path('uploads/products-images/long-description-images/');
+            if (!file_exists($destination)) {
+                mkdir($destination, 0777, true);
+            }
+
+            $file->move($destination, $filename);
+
+            $url = asset('uploads/products-images/long-description-images/' . $filename);
+
+            return response()->json(['url' => $url]);
+        }
+
+        return response()->json(['error' => 'No file uploaded'], 400);
+    }
+
+    public function removeCkEditorImage(Request $request)
+    {
+        $request->validate([
+            'image_url' => 'required|url'
+        ]);
+
+        $path = parse_url($request->image_url, PHP_URL_PATH);
+        $absolutePath = public_path($path);
+
+        if (file_exists($absolutePath)) {
+            unlink($absolutePath);
+            return response()->json(['success' => true]);
+        }
+
+        return response()->json(['error' => 'File not found'], 404);
     }
 }

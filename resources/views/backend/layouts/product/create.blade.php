@@ -250,6 +250,9 @@
     </script>
 
     <script>
+        // -----------------------------
+        // CKEditor setup (upload & remove)
+        // -----------------------------
         class MyUploadAdapter {
             constructor(loader) {
                 this.loader = loader;
@@ -258,7 +261,6 @@
                 return this.loader.file.then(file => new Promise((resolve, reject) => {
                     const data = new FormData();
                     data.append('upload', file);
-
                     fetch("{{ route('admin.ckeditor.upload') }}", {
                             method: 'POST',
                             headers: {
@@ -267,15 +269,9 @@
                             body: data
                         })
                         .then(res => res.json())
-                        .then(result => {
-                            if (result.url) {
-                                resolve({
-                                    default: result.url
-                                });
-                            } else {
-                                reject(result.error || 'Upload failed');
-                            }
-                        })
+                        .then(result => result.url ? resolve({
+                            default: result.url
+                        }) : reject(result.error || 'Upload failed'))
                         .catch(err => reject(err));
                 }));
             }
@@ -283,14 +279,38 @@
         }
 
         function MyCustomUploadAdapterPlugin(editor) {
-            editor.plugins.get('FileRepository').createUploadAdapter = loader => {
-                return new MyUploadAdapter(loader);
-            };
+            editor.plugins.get('FileRepository').createUploadAdapter = loader => new MyUploadAdapter(loader);
         }
 
         ClassicEditor
             .create(document.querySelector('#long_description'), {
-                extraPlugins: [MyCustomUploadAdapterPlugin],
+                extraPlugins: [MyCustomUploadAdapterPlugin]
+            })
+            .then(editor => {
+                let previousImages = [];
+                const getImageUrls = () => {
+                    const div = document.createElement('div');
+                    div.innerHTML = editor.getData();
+                    return Array.from(div.querySelectorAll('img')).map(img => img.src);
+                };
+                previousImages = getImageUrls();
+                editor.model.document.on('change:data', () => {
+                    const currentImages = getImageUrls();
+                    const removedImages = previousImages.filter(url => !currentImages.includes(url));
+                    removedImages.forEach(url => {
+                        fetch("{{ route('admin.ckeditor.remove') }}", {
+                            method: 'DELETE',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                            },
+                            body: JSON.stringify({
+                                image_url: url
+                            })
+                        });
+                    });
+                    previousImages = currentImages;
+                });
             })
             .catch(error => console.error(error));
     </script>
