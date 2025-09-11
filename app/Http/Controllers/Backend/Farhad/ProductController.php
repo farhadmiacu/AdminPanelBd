@@ -91,6 +91,8 @@ class ProductController extends Controller
         $product->status = $request->status;
         $product->save();
 
+        $this->syncLongDescriptionImages($product, $request->long_description);
+
         return back()->with('success', 'New Product added successfully');
     }
 
@@ -172,6 +174,8 @@ class ProductController extends Controller
         $product->status = $request->status;
         $product->save();
 
+        $this->syncLongDescriptionImages($product, $request->long_description);
+
         return back()->with('success', 'Product updated successfully');
     }
 
@@ -187,7 +191,73 @@ class ProductController extends Controller
             unlink($product->image);
         }
 
+        // ✅ Delete all long description images (physical + DB)
+        foreach ($product->longDescriptionImages as $img) {
+            $absolutePath = public_path($img->image_path);
+            if (file_exists($absolutePath)) {
+                unlink($absolutePath);
+            }
+        }
+        $product->longDescriptionImages()->delete();
+
         $product->delete();
         return redirect()->back()->with('success', 'Product deleted successfully');
+    }
+
+    // ✅ CKEditor Upload Handler
+    public function uploadCkEditorImage(Request $request)
+    {
+        if ($request->hasFile('upload')) {
+            $file = $request->file('upload');
+            $filename = uniqid() . '.' . $file->getClientOriginalExtension();
+
+            $destination = public_path('uploads/products-images/long-description-images/');
+            if (!file_exists($destination)) {
+                mkdir($destination, 0777, true);
+            }
+
+            $file->move($destination, $filename);
+
+            $url = asset('uploads/products-images/long-description-images/' . $filename);
+
+            return response()->json([
+                'url' => $url
+            ]);
+        }
+
+        return response()->json(['error' => 'No file uploaded'], 400);
+    }
+
+    // ✅ Sync images with DB + Physical Deletion
+    protected function syncLongDescriptionImages(Product $product, $html)
+    {
+        preg_match_all('/<img[^>]+src="([^">]+)"/i', $html ?? '', $matches);
+        $imageUrls = $matches[1] ?? [];
+
+        // Normalize to relative paths
+        $paths = array_map(fn($url) => parse_url($url, PHP_URL_PATH), $imageUrls);
+
+        // Get currently stored
+        $existing = $product->longDescriptionImages()->pluck('image_path')->toArray();
+
+        // Find removed images
+        $toDelete = array_diff($existing, $paths);
+
+        foreach ($toDelete as $oldPath) {
+            $absolutePath = public_path($oldPath);
+            if (file_exists($absolutePath)) {
+                unlink($absolutePath);
+            }
+        }
+
+        // Remove from DB
+        $product->longDescriptionImages()->whereIn('image_path', $toDelete)->delete();
+
+        // Insert new
+        foreach ($paths as $path) {
+            $product->longDescriptionImages()->firstOrCreate([
+                'image_path' => $path
+            ]);
+        }
     }
 }

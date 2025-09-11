@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Support\Str;
+use App\Models\LongDescriptionImage;
 use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
@@ -43,5 +44,10 @@ class Product extends Model
     public function brand()
     {
         return $this->belongsTo(Brand::class);
+    }
+
+    public function longDescriptionImages()
+    {
+        return $this->hasMany(LongDescriptionImage::class);
     }
 }

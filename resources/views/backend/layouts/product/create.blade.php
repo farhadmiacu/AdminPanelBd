@@ -187,47 +187,50 @@
             document.getElementById('slug').value = slug;
         });
     </script>
-    {{-- <script>
-        ClassicEditor
-            .create(document.querySelector('#long_description'))
-            .catch(error => {
-                console.error(error);
-            });
-    </script> --}}
+
     <script>
-        ClassicEditor
-            .create(document.querySelector('#long_description'), {
-                extraPlugins: [MyCustomBase64UploadAdapterPlugin]
-            })
-            .catch(error => {
-                console.error(error);
-            });
-
-        // Base64 Upload Adapter Plugin
-        function MyCustomBase64UploadAdapterPlugin(editor) {
-            editor.plugins.get('FileRepository').createUploadAdapter = (loader) => {
-                return new Base64UploadAdapter(loader);
-            };
-        }
-
-        class Base64UploadAdapter {
+        class MyUploadAdapter {
             constructor(loader) {
                 this.loader = loader;
             }
-
             upload() {
-                return this.loader.file
-                    .then(file => new Promise((resolve, reject) => {
-                        const reader = new FileReader();
-                        reader.onload = () => resolve({
-                            default: reader.result
-                        });
-                        reader.onerror = err => reject(err);
-                        reader.readAsDataURL(file);
-                    }));
-            }
+                return this.loader.file.then(file => new Promise((resolve, reject) => {
+                    const data = new FormData();
+                    data.append('upload', file);
 
+                    fetch("{{ route('admin.ckeditor.upload') }}", {
+                            method: 'POST',
+                            headers: {
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                            },
+                            body: data
+                        })
+                        .then(res => res.json())
+                        .then(result => {
+                            if (result.url) {
+                                resolve({
+                                    default: result.url
+                                });
+                            } else {
+                                reject(result.error || 'Upload failed');
+                            }
+                        })
+                        .catch(err => reject(err));
+                }));
+            }
             abort() {}
         }
+
+        function MyCustomUploadAdapterPlugin(editor) {
+            editor.plugins.get('FileRepository').createUploadAdapter = loader => {
+                return new MyUploadAdapter(loader);
+            };
+        }
+
+        ClassicEditor
+            .create(document.querySelector('#long_description'), {
+                extraPlugins: [MyCustomUploadAdapterPlugin],
+            })
+            .catch(error => console.error(error));
     </script>
 @endpush

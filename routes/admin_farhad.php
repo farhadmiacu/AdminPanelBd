@@ -71,4 +71,7 @@ Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
     //status
     // Route::post('/update-status', [StatusController::class, 'update'])->name('status.update')->middleware('can:status_update');
     Route::post('/update-status', [StatusController::class, 'update'])->name('status.update');
+
+    // CKEditor image upload
+    Route::post('/ckeditor/upload', [ProductController::class, 'uploadCkEditorImage'])->name('ckeditor.upload');
 });
