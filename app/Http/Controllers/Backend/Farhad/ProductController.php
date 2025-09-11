@@ -270,13 +270,87 @@ class ProductController extends Controller
 
 
     // ✅ Sync images with DB + Physical Deletion
+    // protected function syncLongDescriptionImages(Product $product, $html)
+    // {
+    //     preg_match_all('/<img[^>]+src="([^">]+)"/i', $html ?? '', $matches);
+    //     $imageUrls = $matches[1] ?? [];
+
+    //     // Normalize to relative paths
+    //     $paths = array_map(fn($url) => parse_url($url, PHP_URL_PATH), $imageUrls);
+
+    //     // Get currently stored
+    //     $existing = $product->longDescriptionImages()->pluck('image_path')->toArray();
+
+    //     // Find removed images
+    //     $toDelete = array_diff($existing, $paths);
+
+    //     foreach ($toDelete as $oldPath) {
+    //         $absolutePath = public_path($oldPath);
+    //         if (file_exists($absolutePath)) {
+    //             unlink($absolutePath);
+    //         }
+    //     }
+
+    //     // Remove from DB
+    //     $product->longDescriptionImages()->whereIn('image_path', $toDelete)->delete();
+
+    //     // Insert new
+    //     foreach ($paths as $path) {
+    //         $product->longDescriptionImages()->firstOrCreate([
+    //             'image_path' => $path
+    //         ]);
+    //     }
+    // }
+
+    // protected function syncLongDescriptionImages(Product $product, $html)
+    // {
+    //     preg_match_all('/<img[^>]+src="([^">]+)"/i', $html ?? '', $matches);
+    //     $imageUrls = $matches[1] ?? [];
+
+    //     // Keep full URLs exactly as they appear in the HTML
+    //     $paths = $imageUrls;
+
+    //     // Get currently stored
+    //     $existing = $product->longDescriptionImages()->pluck('image_path')->toArray();
+
+    //     // Find removed images
+    //     $toDelete = array_diff($existing, $paths);
+
+    //     foreach ($toDelete as $oldPath) {
+    //         $absolutePath = public_path($oldPath);
+    //         if (file_exists($absolutePath)) {
+    //             unlink($absolutePath);
+    //         }
+    //     }
+
+    //     // Remove from DB
+    //     $product->longDescriptionImages()->whereIn('image_path', $toDelete)->delete();
+
+    //     // Insert new
+    //     foreach ($paths as $path) {
+    //         $product->longDescriptionImages()->firstOrCreate([
+    //             'image_path' => $path
+    //         ]);
+    //     }
+    // }
+
     protected function syncLongDescriptionImages(Product $product, $html)
     {
         preg_match_all('/<img[^>]+src="([^">]+)"/i', $html ?? '', $matches);
         $imageUrls = $matches[1] ?? [];
 
-        // Normalize to relative paths
-        $paths = array_map(fn($url) => parse_url($url, PHP_URL_PATH), $imageUrls);
+        $paths = [];
+
+        foreach ($imageUrls as $url) {
+            // If the URL contains your app URL, store relative path
+            if (str_contains($url, url('/'))) {
+                $relativePath = str_replace(url('/') . '/', '', $url);
+                $paths[] = $relativePath;
+            } else {
+                // External URL, keep as-is
+                $paths[] = $url;
+            }
+        }
 
         // Get currently stored
         $existing = $product->longDescriptionImages()->pluck('image_path')->toArray();
@@ -285,9 +359,12 @@ class ProductController extends Controller
         $toDelete = array_diff($existing, $paths);
 
         foreach ($toDelete as $oldPath) {
-            $absolutePath = public_path($oldPath);
-            if (file_exists($absolutePath)) {
-                unlink($absolutePath);
+            // Only delete local files
+            if (!str_starts_with($oldPath, 'http')) {
+                $absolutePath = public_path($oldPath);
+                if (file_exists($absolutePath)) {
+                    unlink($absolutePath);
+                }
             }
         }
 
@@ -301,6 +378,9 @@ class ProductController extends Controller
             ]);
         }
     }
+
+
+
 
     public function uploadCkEditorImage(Request $request)
     {
