@@ -30,7 +30,8 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <!-- IziToast JS -->
 {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/js/iziToast.min.js"></script> --}}
-
+<!-- Dropzone JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.3/dropzone.min.js"></script>
 <!-- Dashboard init -->
 <script src="{{ asset('/') }}backend/assets/js/pages/dashboard-ecommerce.init.js"></script>
 <!-- App js -->

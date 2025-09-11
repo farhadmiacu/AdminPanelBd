@@ -11,7 +11,7 @@
             {{-- Dashboard --}}
             @can('dashboard_view')
                 <li class="nav-item">
-                    <a class="nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}" href="{{ route('admin.dashboard') }}">
+                    <a class="nav-link menu-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}" href="{{ route('admin.dashboard') }}">
                         <i class="ri-dashboard-line"></i> <span>Dashboard</span>
                     </a>
                 </li>
@@ -156,7 +156,7 @@
             {{-- System Settings --}}
             @can('system-settings_edit')
                 <li class="nav-item">
-                    <a class="nav-link {{ request()->routeIs('admin.system-settings.edit') ? 'active' : '' }}" href="{{ route('admin.system-settings.edit') }}">
+                    <a class="nav-link menu-link {{ request()->routeIs('admin.system-settings.edit') ? 'active' : '' }}" href="{{ route('admin.system-settings.edit') }}">
                         <i class="ri-settings-3-line"></i> <span>System Settings</span>
                     </a>
                 </li>

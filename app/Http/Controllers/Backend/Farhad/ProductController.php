@@ -7,6 +7,7 @@ use App\Models\Product;
 use App\Models\Category;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Models\ProductMultiImage;
 use App\Http\Controllers\Controller;
 use Intervention\Image\Facades\Image;
 
@@ -51,6 +52,8 @@ class ProductController extends Controller
             'brand_id' => 'required|exists:brands,id',
             'code' => 'required|string|max:255',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            'multi_images'       => 'nullable', // Ensure the array itself is not empty
+            'multi_images.*'     => 'nullable|image|mimes:jpeg,png,jpg,gif', //for table
             'short_description' => 'nullable|string',
             'long_description' => 'nullable|string',
             'regular_price' => 'required|numeric|min:0',
@@ -92,6 +95,20 @@ class ProductController extends Controller
         $product->save();
 
         $this->syncLongDescriptionImages($product, $request->long_description);
+
+        // Multiple images
+        if ($request->hasFile('multi_images')) {
+            foreach ($request->file('multi_images') as $multiImage) {
+                $multiName = time() . '_' . uniqid() . '.' . $multiImage->getClientOriginalExtension();
+                $directory = 'uploads/products-images/multi/';
+                $multiImage->move($directory, $multiName);
+
+                $productImage = new ProductMultiImage();
+                $productImage->product_id = $product->id;
+                $productImage->image = $directory . $multiName;
+                $productImage->save();
+            }
+        }
 
         return back()->with('success', 'New Product added successfully');
     }

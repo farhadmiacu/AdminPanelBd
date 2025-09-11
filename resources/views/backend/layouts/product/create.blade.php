@@ -99,6 +99,22 @@
                                 </div>
                             </div>
 
+                            {{-- Product Multi Images --}}
+                            <div class="col-xxl-12 col-md-12 mt-3">
+                                <div>
+                                    <label for="multi_images" class="form-label">Product Multi Images</label>
+                                    <input type="file" name="multi_images[]" id="multi_images" class="form-control" multiple data-allowed-file-extensions="jpg jpeg png gif">
+                                    @error('multi_images')
+                                        @if ($errors->has('multi_images'))
+                                            {{ $errors->first('multi_images') }}
+                                        @endif
+                                        @foreach ($errors->get('multi_images.*') as $message)
+                                            {{ $message[0] }}<br>
+                                        @endforeach
+                                    @enderror
+                                </div>
+                            </div>
+
                             {{-- Short Description --}}
                             <div class="col-xxl-12 col-md-12">
                                 <label for="short_description" class="form-label">Short Description</label>
@@ -117,7 +133,8 @@
                             <div class="col-xxl-6 col-md-6">
                                 <div>
                                     <label for="regular_price" class="form-label">Regular Price</label>
-                                    <input type="number" name="regular_price" id="regular_price" class="form-control" placeholder="Enter Regular Price" value="{{ old('regular_price') }}" step="0.01">
+                                    <input type="number" name="regular_price" id="regular_price" class="form-control" placeholder="Enter Regular Price" value="{{ old('regular_price') }}"
+                                        step="0.01">
                                     @error('regular_price')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror

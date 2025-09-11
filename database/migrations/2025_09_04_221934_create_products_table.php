@@ -15,21 +15,10 @@ return new class extends Migration
             $table->id();
             $table->string('name')->unique();
             $table->string('slug')->unique();
-
-            $table->foreignId('category_id')
-                ->default(1)
-                ->constrained('categories')
-                ->cascadeOnUpdate()
-                ->restrictOnDelete();
-
-            $table->foreignId('brand_id')
-                ->default(1)
-                ->constrained('brands')
-                ->cascadeOnUpdate()
-                ->restrictOnDelete();
-
+            $table->foreignId('category_id')->default(1)->constrained('categories')->cascadeOnUpdate()->restrictOnDelete();
+            $table->foreignId('brand_id')->default(1)->constrained('brands')->cascadeOnUpdate()->restrictOnDelete();
             $table->string('code');
-            $table->string('image')->nullable();
+            $table->text('image')->nullable();
             $table->text('short_description')->nullable();
             $table->longText('long_description')->nullable();
             $table->decimal('regular_price', 10, 2);
