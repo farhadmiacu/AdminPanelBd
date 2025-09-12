@@ -308,6 +308,7 @@
             });
         });
     </script>
+    {{-- multi image preview script --}}
 
     <script>
         // -----------------------------
