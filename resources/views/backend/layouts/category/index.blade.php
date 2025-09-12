@@ -78,14 +78,14 @@
                                         </td>
                                         <td>
                                             @can('category_edit')
-                                                <a href="{{ route('admin.categories.edit', $category->id) }}" class="btn btn-sm btn-primary">Edit</a>
+                                                <a href="{{ route('admin.categories.edit', $category->id) }}" class="btn btn-sm btn-primary"><i class="fa-regular fa-pen-to-square"></i></a>
                                             @endcan
 
                                             @can('category_delete')
                                                 <form action="{{ route('admin.categories.destroy', $category->id) }}" method="POST" style="display:inline-block;">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="submit" class="btn btn-sm btn-danger delete-button">Delete</button>
+                                                    <button type="submit" class="btn btn-sm btn-danger delete-button"><i class="fa-regular fa-trash-can"></i></button>
                                                 </form>
                                             @endcan
                                         </td>

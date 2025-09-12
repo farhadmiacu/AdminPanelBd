@@ -166,5 +166,4 @@
 
 {{-- Push the script --}}
 @push('scripts')
-
 @endpush

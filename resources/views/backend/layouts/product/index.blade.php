@@ -64,14 +64,14 @@
                                         </td>
                                         <td>
                                             @can('product_edit')
-                                                <a href="{{ route('admin.products.edit', $product->id) }}" class="btn btn-sm btn-primary">Edit</a>
+                                                <a href="{{ route('admin.products.edit', $product->id) }}" class="btn btn-sm btn-primary"><i class="fa-regular fa-pen-to-square"></i></a>
                                             @endcan
 
                                             @can('product_delete')
                                                 <form action="{{ route('admin.products.destroy', $product->id) }}" method="POST" style="display:inline-block;">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="submit" class="btn btn-sm btn-danger delete-button">Delete</button>
+                                                    <button type="submit" class="btn btn-sm btn-danger delete-button"><i class="fa-regular fa-trash-can"></i></button>
                                                 </form>
                                             @endcan
                                         </td>

@@ -84,14 +84,14 @@
 
                                             <td>
                                                 @can('brand_edit')
-                                                    <a href="{{ route('admin.brands.edit', $brand->id) }}" class="btn btn-sm btn-primary">Edit</a>
+                                                    <a href="{{ route('admin.brands.edit', $brand->id) }}" class="btn btn-sm btn-primary"><i class="fa-regular fa-pen-to-square"></i></a>
                                                 @endcan
 
                                                 @can('brand_delete')
                                                     <form action="{{ route('admin.brands.destroy', $brand->id) }}" method="POST" style="display:inline-block;">
                                                         @csrf
                                                         @method('DELETE')
-                                                        <button type="submit" class="btn btn-sm btn-danger delete-button secure-delete-button">Delete</button>
+                                                        <button type="submit" class="btn btn-sm btn-danger delete-button secure-delete-button"><i class="fa-regular fa-trash-can"></i></button>
                                                     </form>
                                                 @endcan
                                             </td>

@@ -34,9 +34,9 @@ class SystemSettingController extends Controller
             'whatsapp_number' => 'nullable|string|max:20',
             'email' => 'nullable|email|max:255',
             'copyright_text' => 'nullable|string|max:255',
-            'logo' => 'nullable|image|mimes:png,jpg,jpeg,svg|max:2048',
-            'mini_logo' => 'nullable|image|mimes:png,jpg,jpeg,svg|max:2048',
-            'favicon' => 'nullable|image|mimes:png,ico|max:1024',
+            'logo' => 'nullable|image|mimes:png,jpg,jpeg,svg|max:5120',
+            'mini_logo' => 'nullable|image|mimes:png,jpg,jpeg,svg|max:5120',
+            'favicon' => 'nullable|image|mimes:png,ico|max:5120',
         ]);
 
         // $setting = SystemSetting::firstOrNew(['id' => 1]); //do not use mass assignment
