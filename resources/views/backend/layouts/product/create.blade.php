@@ -227,22 +227,83 @@
 
     {{-- multi image preview script --}}
     <script>
-        document.getElementById('multi_images').addEventListener('change', function(event) {
-            let previewContainer = document.getElementById('preview_multi_images');
-            previewContainer.innerHTML = ''; // clear old previews
+        const previewContainer = document.getElementById('preview_multi_images');
+        const fileInput = document.getElementById('multi_images');
 
+        let allFiles = []; // store all selected files
+
+        // Add new file previews
+        fileInput.addEventListener('change', function(event) {
             Array.from(event.target.files).forEach(file => {
                 if (file.type.startsWith('image/')) {
-                    let reader = new FileReader();
+                    allFiles.push(file); // add to array
+
+                    const reader = new FileReader();
                     reader.onload = function(e) {
-                        let img = document.createElement('img');
-                        img.setAttribute('src', e.target.result);
-                        img.setAttribute('height', '150');
-                        img.setAttribute('width', '150');
-                        img.classList.add('me-2', 'mb-2', 'rounded');
-                        previewContainer.appendChild(img);
+                        const wrapper = document.createElement('div');
+                        wrapper.classList.add('position-relative', 'd-inline-block', 'new-preview');
+
+                        const img = document.createElement('img');
+                        img.src = e.target.result;
+                        img.height = 150;
+                        img.width = 150;
+                        img.classList.add('rounded', 'border', 'p-1', 'shadow-sm');
+                        img.style.border = "2px dashed #28a745";
+                        img.style.padding = "4px";
+
+                        const btn = document.createElement('span');
+                        btn.innerHTML = "&times;";
+                        btn.classList.add('remove-img-btn', 'position-absolute', 'top-0', 'end-0', 'bg-danger', 'text-white', 'rounded-circle', 'd-flex', 'align-items-center',
+                            'justify-content-center');
+                        btn.style.width = "24px";
+                        btn.style.height = "24px";
+                        btn.style.cursor = "pointer";
+
+                        // store the file index
+                        wrapper.dataset.index = allFiles.length - 1;
+
+                        wrapper.appendChild(img);
+                        wrapper.appendChild(btn);
+                        previewContainer.appendChild(wrapper);
                     }
                     reader.readAsDataURL(file);
+                }
+            });
+
+            // Reset input so same file can be added again
+            fileInput.value = '';
+        });
+
+        // Remove preview when clicking ❌
+        previewContainer.addEventListener('click', function(e) {
+            if (e.target.classList.contains('remove-img-btn')) {
+                const wrapper = e.target.closest('div');
+                const index = parseInt(wrapper.dataset.index);
+                allFiles[index] = null; // mark removed
+                wrapper.remove();
+            }
+        });
+
+        // Before form submit, append all files to a hidden input file array
+        document.getElementById('productForm').addEventListener('submit', function(e) {
+            const form = this;
+
+            // Remove old hidden inputs if any
+            document.querySelectorAll('input[name="multi_images[]"]').forEach(i => i.remove());
+
+            // Create hidden file inputs for allFiles
+            allFiles.forEach(file => {
+                if (file) {
+                    const dataTransfer = new DataTransfer();
+                    dataTransfer.items.add(file);
+
+                    const newInput = document.createElement('input');
+                    newInput.type = 'file';
+                    newInput.name = 'multi_images[]';
+                    newInput.files = dataTransfer.files;
+                    newInput.style.display = 'none';
+
+                    form.appendChild(newInput);
                 }
             });
         });

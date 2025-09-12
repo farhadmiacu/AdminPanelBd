@@ -195,28 +195,32 @@ class ProductController extends Controller
         $this->syncLongDescriptionImages($product, $request->long_description);
 
 
+        /* ---------- Remove selected multi images ---------- */
         if ($request->filled('removed_images')) {
-            $removedIds = json_decode($request->removed_images, true);
+            // removed_images is coming as an array, not JSON
+            $removedIds = is_array($request->removed_images) ? $request->removed_images : [$request->removed_images];
             foreach ($removedIds as $id) {
                 $img = ProductMultiImage::find($id);
                 if ($img) {
-                    // Delete image file if needed
-                    @unlink(public_path($img->image));
+                    if (file_exists(public_path($img->image))) {
+                        @unlink(public_path($img->image));
+                    }
                     $img->delete();
                 }
             }
         }
 
+        /* ---------- Add new multi images (do not remove old ones) ---------- */
         // Check if new multiple images uploaded
         if ($request->hasFile('multi_images')) {
             // Delete old images (both from DB and storage)
-            $oldImages = ProductMultiImage::where('product_id', $product->id)->get();
-            foreach ($oldImages as $oldImage) {
-                if (file_exists(public_path($oldImage->image))) {
-                    unlink(public_path($oldImage->image));
-                }
-                $oldImage->delete();
-            }
+            // $oldImages = ProductMultiImage::where('product_id', $product->id)->get();
+            // foreach ($oldImages as $oldImage) {
+            //     if (file_exists(public_path($oldImage->image))) {
+            //         unlink(public_path($oldImage->image));
+            //     }
+            //     $oldImage->delete();
+            // }
 
             // Save new images
             foreach ($request->file('multi_images') as $multiImage) {
