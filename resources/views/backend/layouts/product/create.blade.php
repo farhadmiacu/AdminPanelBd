@@ -100,7 +100,7 @@
                             </div>
 
                             {{-- Product Multi Images --}}
-                            <div class="col-xxl-12 col-md-12 mt-3">
+                            {{-- <div class="col-xxl-12 col-md-12 mt-3">
                                 <div>
                                     <label for="multi_images" class="form-label">Product Multi Images</label>
                                     <input type="file" name="multi_images[]" id="multi_images" class="form-control" multiple data-allowed-file-extensions="jpg jpeg png gif">
@@ -113,10 +113,27 @@
                                         @endforeach
                                     @enderror
                                 </div>
-                            </div>
+                            </div> --}}
 
-                            {{-- Hidden field to store file metadata --}}
-                            <input type="hidden" name="filepond_files" id="filepond_files">
+                            {{-- Product Multi Images --}}
+                            <div class="col-xxl-12 col-md-12 mt-3">
+                                <div>
+                                    <label for="multi_images" class="form-label">Product Multi Images</label>
+                                    <input type="file" name="multi_images[]" id="multi_images" class="form-control" multiple data-allowed-file-extensions="jpg jpeg png gif">
+
+                                    {{-- Preview area --}}
+                                    <div id="preview_multi_images" class="mt-3 d-flex flex-wrap gap-2"></div>
+
+                                    @error('multi_images')
+                                        @if ($errors->has('multi_images'))
+                                            {{ $errors->first('multi_images') }}
+                                        @endif
+                                        @foreach ($errors->get('multi_images.*') as $message)
+                                            {{ $message[0] }}<br>
+                                        @endforeach
+                                    @enderror
+                                </div>
+                            </div>
 
                             {{-- Short Description --}}
                             <div class="col-xxl-12 col-md-12">
@@ -205,6 +222,29 @@
                 .replace(/\s+/g, '-') // replace spaces with -
                 .replace(/-+/g, '-'); // remove multiple -
             document.getElementById('slug').value = slug;
+        });
+    </script>
+
+    {{-- multi image preview script --}}
+    <script>
+        document.getElementById('multi_images').addEventListener('change', function(event) {
+            let previewContainer = document.getElementById('preview_multi_images');
+            previewContainer.innerHTML = ''; // clear old previews
+
+            Array.from(event.target.files).forEach(file => {
+                if (file.type.startsWith('image/')) {
+                    let reader = new FileReader();
+                    reader.onload = function(e) {
+                        let img = document.createElement('img');
+                        img.setAttribute('src', e.target.result);
+                        img.setAttribute('height', '150');
+                        img.setAttribute('width', '150');
+                        img.classList.add('me-2', 'mb-2', 'rounded');
+                        previewContainer.appendChild(img);
+                    }
+                    reader.readAsDataURL(file);
+                }
+            });
         });
     </script>
 

@@ -115,9 +115,12 @@
                                 <div>
                                     <label for="multi_images" class="form-label">Product Multi Images</label>
                                     <input type="file" name="multi_images[]" id="multi_images" class="form-control" multiple data-allowed-file-extensions="jpg jpeg png gif">
-                                    @foreach ($product->productMultiImages as $productMultiImage)
-                                        <img src="{{ asset($productMultiImage->image) }}" alt="" height="200" width="200" />
-                                    @endforeach
+                                    {{-- Existing DB Images --}}
+                                    <div id="preview_multi_images" class="mt-3 d-flex flex-wrap gap-2">
+                                        @foreach ($product->productMultiImages as $productMultiImage)
+                                            <img src="{{ asset($productMultiImage->image) }}" alt="Product Image" height="150" width="150" class="me-2 mb-2 rounded border p-1 shadow-sm" />
+                                        @endforeach
+                                    </div>
                                     @error('multi_images')
                                         @if ($errors->has('multi_images'))
                                             {{ $errors->first('multi_images') }}
