@@ -8,6 +8,7 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Intervention\Image\Facades\Image;
+use Yajra\DataTables\Facades\DataTables;
 
 class CategoryController extends Controller
 {
@@ -23,10 +24,65 @@ class CategoryController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $categories = Category::all();
-        return view('backend.layouts.category.index', compact('categories'));
+        //normal way
+        // $categories = Category::all();
+        // return view('backend.layouts.category.index', compact('categories'));
+
+        // yajra datatable
+        if ($request->ajax()) {
+            $categories = Category::latest()->get();
+
+            return DataTables::of($categories)
+                ->addIndexColumn()
+                ->addColumn('image', function ($row) {
+                    if ($row->image) {
+                        return '<img src="' . asset($row->image) . '" width="50" height="50" class="rounded">';
+                    }
+                    return '<span class="badge bg-secondary">No Image</span>';
+                })
+                ->addColumn('status', function ($row) {
+                    $checked = $row->status ? 'checked' : '';
+                    $disabled = auth()->user()->can('category_edit') ? '' : 'disabled';
+
+                    return '<div class="form-check form-switch form-switch-right form-switch-md">
+                        <input class="form-check-input status-switch"
+                               type="checkbox"
+                               data-id="' . $row->id . '"
+                               data-type="category"
+                               ' . $checked . ' ' . $disabled . '>
+                    </div>';
+                })
+                ->addColumn('action', function ($row) {
+                    $action = '';
+
+                    // Edit button
+                    if (auth()->user()->can('category_edit')) {
+                        $action .= '<a href="' . route('admin.categories.edit', $row->id) . '"
+                               class="btn btn-sm btn-primary me-1">
+                               <i class="fa-regular fa-pen-to-square"></i>
+                            </a>';
+                    }
+
+                    // Delete button
+                    if (auth()->user()->can('category_delete')) {
+                        $action .= '<form action="' . route('admin.categories.destroy', $row->id) . '"
+                                method="POST" style="display:inline-block;">
+                                ' . csrf_field() . method_field('DELETE') . '
+                                <button type="submit" class="btn btn-sm btn-danger delete-button">
+                                    <i class="fa-regular fa-trash-can"></i>
+                                </button>
+                            </form>';
+                    }
+
+                    return $action;
+                })
+                ->rawColumns(['image', 'status', 'action'])
+                ->make(true);
+        }
+
+        return view('backend.layouts.category.index');
     }
 
     /**

@@ -44,7 +44,7 @@
                     </div>
                 </div> --}}
 
-                <div class="card-body">
+                {{-- <div class="card-body">
                     <div class="table-reponsive">
                         <table id="categoriesTable" class="table table-bordered w-100">
                             <thead>
@@ -94,6 +94,27 @@
                             </tbody>
                         </table>
                     </div>
+                </div> --}}
+                <div class="card">
+                    {{-- <div class="card-header">
+                        <h4 class="card-title">Category List</h4>
+                    </div> --}}
+                    <div class="card-body">
+                        <table class="table table-bordered dt-responsive nowrap" id="categoryTable">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Name</th>
+                                    <th>Slug</th>
+                                    <th>Image</th>
+                                    <th>Status</th>
+                                    {{-- <th>Created At</th> --}}
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
                 </div>
 
             </div>
@@ -106,11 +127,49 @@
 {{-- Push the script --}}
 @push('scripts')
     <script>
-        $(document).ready(function() {
-            $('#categoriesTable').DataTable({
+        $(function() {
+            $('#categoryTable').DataTable({
+                processing: true,
+                serverSide: true,
                 responsive: true,
+
+                ajax: "{{ route('admin.categories.index') }}",
+                columns: [{
+                        data: 'DT_RowIndex',
+                        name: 'DT_RowIndex'
+                    },
+                    {
+                        data: 'name',
+                        name: 'name'
+                    },
+                    {
+                        data: 'slug',
+                        name: 'slug'
+                    },
+                    {
+                        data: 'image',
+                        name: 'image',
+                        orderable: false,
+                        searchable: false
+                    },
+                    {
+                        data: 'status',
+                        name: 'status',
+                        orderable: false,
+                        searchable: false
+                    },
+                    // {
+                    //     data: 'created_at',
+                    //     name: 'created_at'
+                    // },
+                    {
+                        data: 'action',
+                        name: 'action',
+                        orderable: false,
+                        searchable: false
+                    },
+                ]
             });
         });
     </script>
-
 @endpush
