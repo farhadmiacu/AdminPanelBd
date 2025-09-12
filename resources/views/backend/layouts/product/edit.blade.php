@@ -115,10 +115,12 @@
                                 <div>
                                     <label for="multi_images" class="form-label">Product Multi Images</label>
                                     <input type="file" name="multi_images[]" id="multi_images" class="form-control" multiple data-allowed-file-extensions="jpg jpeg png gif">
-                                    {{-- Existing DB Images --}}
+                                    {{-- Preview area (old + new images) --}}
                                     <div id="preview_multi_images" class="mt-3 d-flex flex-wrap gap-2">
+                                        {{-- Existing DB Images --}}
                                         @foreach ($product->productMultiImages as $productMultiImage)
-                                            <img src="{{ asset($productMultiImage->image) }}" alt="Product Image" height="150" width="150" class="me-2 mb-2 rounded border p-1 shadow-sm" />
+                                            <img src="{{ asset($productMultiImage->image) }}" alt="Product Image" height="150" width="150"
+                                                class="me-2 mb-2 rounded border p-1 shadow-sm existing-img" />
                                         @endforeach
                                     </div>
                                     @error('multi_images')
@@ -214,6 +216,37 @@
                 .replace(/\s+/g, '-')
                 .replace(/-+/g, '-');
             document.getElementById('slug').value = slug;
+        });
+    </script>
+    <script>
+        document.getElementById('multi_images').addEventListener('change', function(event) {
+            let previewContainer = document.getElementById('preview_multi_images');
+
+            // Remove only previously added preview images, keep DB images
+            let newPreviews = previewContainer.querySelectorAll('.new-preview');
+            newPreviews.forEach(img => img.remove());
+
+            Array.from(event.target.files).forEach(file => {
+                if (file.type.startsWith('image/')) {
+                    let reader = new FileReader();
+                    reader.onload = function(e) {
+                        let img = document.createElement('img');
+                        img.setAttribute('src', e.target.result);
+                        img.setAttribute('height', '150');
+                        img.setAttribute('width', '150');
+                        img.classList.add(
+                            'me-2', 'mb-2', 'rounded', 'p-1', 'shadow-sm', 'new-preview'
+                        );
+
+                        // Highlight style for new images
+                        img.style.border = "2px dashed #28a745"; // green dashed border
+                        img.style.padding = "4px";
+
+                        previewContainer.appendChild(img);
+                    }
+                    reader.readAsDataURL(file);
+                }
+            });
         });
     </script>
 
