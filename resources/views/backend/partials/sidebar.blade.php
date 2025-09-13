@@ -154,6 +154,7 @@
             @endcan
 
             {{-- System Settings --}}
+
             @can('system-settings_edit')
                 <li class="nav-item">
                     <a class="nav-link menu-link {{ request()->routeIs('admin.system-settings.edit') ? 'active' : '' }}" href="{{ route('admin.system-settings.edit') }}">
@@ -161,6 +162,12 @@
                     </a>
                 </li>
             @endcan
+            {{-- Mail Settings --}}
+            <li class="nav-item">
+                <a class="nav-link menu-link {{ request()->routeIs('admin.mail-settings.edit') ? 'active' : '' }}" href="{{ route('admin.mail-settings.edit') }}">
+                    <i class="ri-mail-settings-line"></i> <span>Mail Settings</span>
+                </a>
+            </li>
 
         </ul>
     </div>

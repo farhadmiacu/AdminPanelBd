@@ -17,9 +17,11 @@
 <script src="{{ asset('/') }}backend/assets/libs/swiper/swiper-bundle.min.js"></script>
 
 <!-- Data Table (normal)-->
-<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+{{-- <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
-<script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script> --}}
+<!-- Yajra DataTable -->
+<script src="https://cdn.datatables.net/v/bs5/dt-2.3.4/r-3.0.3/datatables.min.js"></script>
 <!-- Dropify -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Dropify/0.2.2/js/dropify.min.js"></script>
 <!-- ckeditor -->

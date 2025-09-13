@@ -27,59 +27,57 @@
                 </div><!-- end card header -->
 
                 <div class="card-body">
-                    <div class="table-responsive">
-                        <table id="productsTable" class="table table-bordered w-100">
-                            <thead>
+                    <table id="productsTable" class="table table-bordered dt-responsive nowrap">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Name</th>
+                                <th>Category</th>
+                                <th>Brand</th>
+                                <th>Code</th>
+                                <th>Image</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($products as $key => $product)
                                 <tr>
-                                    <th>#</th>
-                                    <th>Name</th>
-                                    <th>Category</th>
-                                    <th>Brand</th>
-                                    <th>Code</th>
-                                    <th>Image</th>
-                                    <th>Status</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($products as $key => $product)
-                                    <tr>
-                                        <td>{{ $key + 1 }}</td>
-                                        <td>{{ $product->name }}</td>
-                                        <td>{{ $product->category->name ?? 'N/A' }}</td>
-                                        <td>{{ $product->brand->name ?? 'N/A' }}</td>
-                                        <td>{{ $product->code }}</td>
-                                        <td>
-                                            @if ($product->image)
-                                                <img src="{{ asset($product->image) }}" alt="{{ $product->name }}" style="width: 60px; height: auto; margin-top: 5px;">
-                                            @else
-                                                <span class="text-muted">No Image</span>
-                                            @endif
-                                        </td>
-                                        <td>
-                                            <div class="form-check form-switch form-switch-right form-switch-md">
-                                                <input class="form-check-input status-switch" type="checkbox" data-id="{{ $product->id }}" data-type="product" {{ $product->status ? 'checked' : '' }}
-                                                    @cannot('product_edit') disabled @endcannot>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            @can('product_edit')
-                                                <a href="{{ route('admin.products.edit', $product->id) }}" class="btn btn-sm btn-primary"><i class="fa-regular fa-pen-to-square"></i></a>
-                                            @endcan
+                                    <td>{{ $key + 1 }}</td>
+                                    <td>{{ $product->name }}</td>
+                                    <td>{{ $product->category->name ?? 'N/A' }}</td>
+                                    <td>{{ $product->brand->name ?? 'N/A' }}</td>
+                                    <td>{{ $product->code }}</td>
+                                    <td>
+                                        @if ($product->image)
+                                            <img src="{{ asset($product->image) }}" alt="{{ $product->name }}" style="width: 60px; height: auto; margin-top: 5px;">
+                                        @else
+                                            <span class="text-muted">No Image</span>
+                                        @endif
+                                    </td>
+                                    <td>
+                                        <div class="form-check form-switch form-switch-right form-switch-md">
+                                            <input class="form-check-input status-switch" type="checkbox" data-id="{{ $product->id }}" data-type="product" {{ $product->status ? 'checked' : '' }}
+                                                @cannot('product_edit') disabled @endcannot>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        @can('product_edit')
+                                            <a href="{{ route('admin.products.edit', $product->id) }}" class="btn btn-sm btn-primary"><i class="fa-regular fa-pen-to-square"></i></a>
+                                        @endcan
 
-                                            @can('product_delete')
-                                                <form action="{{ route('admin.products.destroy', $product->id) }}" method="POST" style="display:inline-block;">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="btn btn-sm btn-danger delete-button"><i class="fa-regular fa-trash-can"></i></button>
-                                                </form>
-                                            @endcan
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
+                                        @can('product_delete')
+                                            <form action="{{ route('admin.products.destroy', $product->id) }}" method="POST" style="display:inline-block;">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-sm btn-danger delete-button"><i class="fa-regular fa-trash-can"></i></button>
+                                            </form>
+                                        @endcan
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
                 </div>
 
             </div>

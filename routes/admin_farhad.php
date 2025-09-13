@@ -47,6 +47,9 @@ Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
     // Systems routes
     Route::get('system/settings', [SystemSettingController::class, 'edit'])->name('system-settings.edit');
     Route::post('system/settings', [SystemSettingController::class, 'update'])->name('system-settings.update');
+    // Mail settings routes
+    Route::get('system/mail-settings', [SystemSettingController::class, 'editMailSettings'])->name('mail-settings.edit');
+    Route::post('system/mail-settings', [SystemSettingController::class, 'updateMailSettings'])->name('mail-settings.update');
 
     // role routes
     Route::get('roles', [RoleController::class, 'index'])->name('roles.index');
